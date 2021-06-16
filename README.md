@@ -1,4 +1,4 @@
-## Kadena Chainweb-data docker deployment
+## Kadena chainweb-data docker deployment
 ### Pull latest image
 ```shell script
 $ docker pull runonflux/kadena-chainweb-data
