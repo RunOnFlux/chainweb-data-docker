@@ -59,7 +59,6 @@ COPY pg_hba.conf /etc/postgresql/13/main/pg_hba.conf
 COPY check-health.sh /check-health.sh
 COPY postgresql.conf /etc/postgresql/13/main/postgresql.conf
 
-ENV PGDATA /var/lib/postgresql/data
 VOLUME /var/lib/postgresql/data
 
 RUN chmod 755 /chainweb-data.sh
