@@ -1,7 +1,6 @@
 #!/bin/bash
 # postgres init script
 
-
 if [[ ! -f /var/lib/postgresql/data/postgresql.conf ]]; then
  echo -n "Postgres initialization..."
  chown -R postgres:postgres /var/lib/postgresql/data
