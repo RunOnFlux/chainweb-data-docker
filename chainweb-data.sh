@@ -1,12 +1,9 @@
 #!/bin/bash
 # chainweb-data init script
 
-
  if [[ -f /usr/local/bin/chainweb-data ]]; then
-
    chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
    exit
-
  fi
 
  #nix installation 
