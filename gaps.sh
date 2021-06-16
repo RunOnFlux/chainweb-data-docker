@@ -1,7 +1,6 @@
 #!/bin/bash
 # chainweb-data gaps
 
-
 if [[ ! -f /tmp/backfill ]]; then
   echo -n "Backfill not complited...Gaps skipped!"
   exit
