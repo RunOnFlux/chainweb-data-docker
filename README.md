@@ -3,7 +3,7 @@
 ```shell script
 $ docker pull runonflux/kadena-chainweb-data
 ```
-### Deploy container in background and bind web port to host
+### Deploy container
 ```shell script
 $ docker run -d -p 8888:8888 -v /local/path:/var/lib/postgresql/data runonflux/kadena-chainweb-data
 ```
