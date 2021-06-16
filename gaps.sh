@@ -3,7 +3,7 @@
 
 
 if [[ ! -f /tmp/backfill ]]; then
-  echo -n "Backfill not complited...Gaps skipped!""
+  echo -n "Backfill not complited...Gaps skipped!"
   exit
 fi
 
