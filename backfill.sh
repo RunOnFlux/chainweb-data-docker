@@ -1,17 +1,13 @@
 #!/bin/bash
 # chainweb-data db sync script
 
-
 if [[ -f /tmp/backfill ]]; then
   echo -n "Backfill already done! skipped..."
   exit
 fi
 
 x=0
-
 until [ $x == 1 ] ; do
-  
-  
   sleep 1000
   server_check=$(ps aux | grep idle | wc -l)
   if [[ "$server_check" == 2 ]]; then
@@ -21,5 +17,4 @@ until [ $x == 1 ] ; do
     echo "B1ackfill complited!" >> /tmp/backfill
     (crontab -l -u "$USER" 2>/dev/null; echo "30 2 * * * /gaps.sh") | crontab -
   fi
-
 done
