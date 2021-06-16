@@ -13,7 +13,7 @@ $ docker run -d -p 8888:8888 -v /local/path:/var/lib/postgresql/data runonflux/k
 - gaps ( one per day after backfill ) 
 
 ```shell script
-Info: service-port=30005 --p2p-port=30004
+Node info: service-port=30005 --p2p-port=30004
 ```
 
 ### Endpoints
