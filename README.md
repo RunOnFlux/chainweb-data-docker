@@ -5,7 +5,7 @@ $ docker pull runonflux/kadena-chainweb-data
 ```
 ### Deploy container in background and bind web port to host
 ```shell script
-$ docker run -d -p 8888:8888 runonflux/kadena-chainweb-data
+$ docker run -d -p 8888:8888 -v /local/path:/var/lib/postgresql/data runonflux/kadena-chainweb-data
 ```
 ### Chainweb-data complex solution
 - server 
