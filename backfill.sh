@@ -15,6 +15,6 @@ until [ $x == 1 ] ; do
     sleep 5
     x=1
     echo "B1ackfill complited!" >> /tmp/backfill
-    (crontab -l -u "$USER" 2>/dev/null; echo "30 2 * * * /gaps.sh") | crontab -
+    (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh >> /tmp/gaps_file.log 2>&1") | crontab -
   fi
 done
