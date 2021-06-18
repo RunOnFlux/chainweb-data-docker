@@ -7,9 +7,9 @@ if [[ "$check" == 2 ]]; then
 check_api_listening=$(sudo lsof -i -P -n | grep -o 8888)
 
   if [[ "$check_api_listening" != "" ]]; then
-  status="ONLINE"
+    status="ONLINE"
   else
-  status="OFFLINE"
+    status="OFFLINE"
   fi
 
   if [[ -f "/tmp/backfill" ]]; then
@@ -20,6 +20,6 @@ check_api_listening=$(sudo lsof -i -P -n | grep -o 8888)
   fi
 
 else
-exit 1
+  exit 1
 fi
 
