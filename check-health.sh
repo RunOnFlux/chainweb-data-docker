@@ -16,7 +16,7 @@ check_api_listening=$(sudo lsof -i -P -n | grep -o 8888)
     echo "chainweb-data: running ($status), postgres: running, backfill: complited"
   else
     progress=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | tail -n1 | egrep -o -E '[0-9]+\.[0-9]+.')
-    echo "chainweb-data: running, postgres: running, backfill: running ($progress)"
+    echo "chainweb-data: running ($status), postgres: running, backfill: running ($progress)"
   fi
 
 else
