@@ -1,9 +1,9 @@
 #!/bin/bash
 # chainweb-data db sync script
-check=$(curl -SsL -k -m 15 https://localhost:30004/chainweb/0.0/mainnet01/cut | jq .height)
+check=$(curl -SsL -k -m 15 https://172.15.0.1:30004/chainweb/0.0/mainnet01/cut | jq .height)
 if [[ "$check" == "" ]]; then
   until [ $check != "" ] ; do
-    check=$(curl -SsL -k -m 15 https://localhost:30004/chainweb/0.0/mainnet01/cut | jq .height)
+    check=$(curl -SsL -k -m 15 https://172.15.0.1:30004/chainweb/0.0/mainnet01/cut | jq .height)
     echo -n "Awaiting for node..."
     sleep 300
   done
