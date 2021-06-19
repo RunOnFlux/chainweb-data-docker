@@ -1,7 +1,7 @@
 #!/bin/bash
 # chainweb-data init script
 
-function node_await(){
+function node_await() {
  check=$(curl -SsL -k -m 15 https://172.15.0.1:30004/chainweb/0.0/mainnet01/cut | jq .height)
  if [[ "$check" == "" ]]; then
    until [ $check != "" ] ; do
