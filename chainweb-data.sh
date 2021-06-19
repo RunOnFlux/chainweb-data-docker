@@ -1,6 +1,7 @@
 #!/bin/bash
 # chainweb-data init script
 
+function node_await(){
  check=$(curl -SsL -k -m 15 https://172.15.0.1:30004/chainweb/0.0/mainnet01/cut | jq .height)
  if [[ "$check" == "" ]]; then
    until [ $check != "" ] ; do
@@ -9,9 +10,10 @@
      sleep 200
    done
  fi
-
+}
 
  if [[ -f /usr/local/bin/chainweb-data ]]; then
+   node_await
    chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
    exit
  fi
@@ -79,5 +81,6 @@
 
  #starting chainweb-data server
  if [[ -f /usr/local/bin/chainweb-data ]]; then
+     node_await
      chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres 
  fi
