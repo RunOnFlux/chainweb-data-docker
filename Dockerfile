@@ -11,7 +11,7 @@ FROM ubuntu:${UBUNTUVER}
 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -y \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl gnupg git cron lsof supervisor \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl gnupg git cron lsof jq supervisor \
  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
  && echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
