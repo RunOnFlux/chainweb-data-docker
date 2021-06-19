@@ -1,6 +1,15 @@
 #!/bin/bash
 # chainweb-data init script
 
+ check=$(curl -SsL -k https://localhost:30004/chainweb/0.0/mainnet01/cut | jq .height)
+ if [[ "$check" == "" ]]; then
+   until [ $check != "" ] ; do
+     check=$(curl -SsL -k https://localhost:30004/chainweb/0.0/mainnet01/cut | jq .height)
+     sleep 200
+   done
+ fi
+
+
  if [[ -f /usr/local/bin/chainweb-data ]]; then
    chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
    exit
