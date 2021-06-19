@@ -1,10 +1,10 @@
 #!/bin/bash
 # chainweb-data init script
 
- check=$(curl -SsL -k https://localhost:30004/chainweb/0.0/mainnet01/cut | jq .height)
+ check=$(curl -SsL -k -m 15 https://localhost:30004/chainweb/0.0/mainnet01/cut | jq .height)
  if [[ "$check" == "" ]]; then
    until [ $check != "" ] ; do
-     check=$(curl -SsL -k https://localhost:30004/chainweb/0.0/mainnet01/cut | jq .height)
+     check=$(curl -SsL -k -m 15 https://localhost:30004/chainweb/0.0/mainnet01/cut | jq .height)
      echo -n "Awaiting for node..."
      sleep 200
    done
