@@ -1,5 +1,12 @@
 #!/bin/bash
 # chainweb-data db sync script
+check=$(curl -SsL -k https://localhost:30004/chainweb/0.0/mainnet01/cut | jq .height)
+if [[ "$check" == "" ]]; then
+  until [ $check != "" ] ; do
+    check=$(curl -SsL -k https://localhost:30004/chainweb/0.0/mainnet01/cut | jq .height)
+    sleep 300
+  done
+fi
 
 if [[ -f /tmp/backfill ]]; then
   echo -n "Backfill already done! skipped..."
