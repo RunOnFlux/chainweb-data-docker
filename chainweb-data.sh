@@ -6,7 +6,7 @@ function node_await() {
  if [[ "$check" == "" ]]; then
    until [ $check != "" ] ; do
      check=$(curl -SsL -k -m 15 https://172.15.0.1:30004/chainweb/0.0/mainnet01/cut | jq .height)
-     echo -n "Awaiting for KDA node..."
+     echo -e "Awaiting for KDA node..."
      sleep 200
    done
  fi
