@@ -16,13 +16,35 @@ fi
 
 x=0
 until [ $x == 1 ] ; do
+
   sleep 1000
   server_check=$(ps aux | grep idle | wc -l)
+  
   if [[ "$server_check" == 2 ]]; then
-    chainweb-data backfill --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
-    sleep 5
-    x=1
-    echo -e "B1ackfill complited!" >> /tmp/backfill
-    (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/gaps_output.log 2>&1") | crontab -
+  
+    date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "Backfill started at $date_timestamp"
+    chainweb-data backfill --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres 
+    sleep 10
+    progress_check=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | tail -n1 | egrep -o -E '[0-9]+\.[0-9]+' | egrep -o -E '[0-9]+' | head -n1 )
+    date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "Backfill progress: $progress_check %, stopped at $date_timestamp"
+
+     if [[ "$progress_check" -ge 70 ]]; then
+       x=1
+       echo -e "Backfill Complited!" >> /tmp/backfill
+       echo -e "Running single after backfill..."
+       chainweb-data single --chain=0 --height=0 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
+       sleep 10
+       echo -e "Running gaps after single..."
+       chainweb-data gaps --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
+       echo -e "Added crone job for gaps..."
+       (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/gaps_output.log 2>&1") | crontab -
+     fi
+    
   fi
 done
+
+
+
+
