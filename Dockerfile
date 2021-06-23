@@ -50,7 +50,6 @@ RUN mkdir -p /var/log/supervisor
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY chainweb-data.sh /chainweb-data.sh
-COPY postgres.sh /postgres.sh
 COPY postgres_init.sh /postgres_init.sh
 COPY backfill.sh /backfill.sh
 COPY gaps.sh /gaps.sh
