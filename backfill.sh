@@ -10,8 +10,12 @@ if [[ "$check" == "" ]]; then
 fi
 
 if [[ -f /tmp/backfill ]]; then
-  echo -e "Backfill already done! skipped..."
-  exit
+    echo -e "Backfill already done! skipped..."
+    echo -e "Running gaps..."
+    chainweb-data gaps --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
+    echo -e "Restarting chainweb-data..."
+    kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
+    exit
 fi
 
 x=0
