@@ -9,7 +9,6 @@ ARG UBUNTUVER=20.04
 
 FROM ubuntu:${UBUNTUVER}
 
-
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl gnupg git cron lsof jq supervisor \
  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
@@ -20,7 +19,6 @@ RUN set -eux; \
 	useradd -r -g postgres --uid=999 --home-dir=/var/lib/postgresql --shell=/bin/bash postgres; \
 	mkdir -p /var/lib/postgresql; \
 	chown -R postgres:postgres /var/lib/postgresql
-
 
 ENV PG_VERSION=13 \
     PG_USER=postgres \
