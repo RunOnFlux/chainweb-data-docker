@@ -19,14 +19,21 @@ backfill_count=0
 
 until [ $x == 1 ] ; do
 
-  sleep 1000
+  if [[ -f /usr/local/bin/chainweb-data ]]; then
+   # give time postgres to run
+    sleep 600
+  else
+    # give time to build chainweb-data binary and postgres to run
+    sleep 1000
+  fi
+ 
   server_check=$(ps aux | grep idle | wc -l)
 
   if [[ "$server_check" == 2 ]]; then
 
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "Backfill started at $date_timestamp"
-    chainweb-data backfill --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres +RTS -N
+    chainweb-data backfill --delay 5 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres +RTS -N
     sleep 10
     progress_check=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | tail -n1 | egrep -o -E '[0-9]+\.[0-9]+' | egrep -o -E '[0-9]+' | head -n1 )
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -46,20 +53,20 @@ until [ $x == 1 ] ; do
        chainweb-data gaps --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
        echo -e "Restarting chainweb-data..."
        kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
-       sleep 800
+       sleep 600
        echo -e "Added crone job for gaps..."
        (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/gaps_output.log 2>&1") | crontab -
        exit
      fi
 
-     if [[ "$progress_check" == "" && "$backfill_count" == 3 ]] ; then
+     if [[ "$progress_check" == "" && "$backfill_count" == 2 ]] ; then
        x=1
        echo -e "Backfill Complited!" >> /tmp/backfill
        echo -e "Running gaps..."
        chainweb-data gaps --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
        echo -e "Restarting chainweb-data..."
        kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
-       sleep 800
+       sleep 600
        echo -e "Added crone job for gaps..."
        (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/gaps_output.log 2>&1") | crontab -
        exit
