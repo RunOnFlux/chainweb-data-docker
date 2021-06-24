@@ -40,7 +40,7 @@ until [ $x == 1 ] ; do
 
     backfill_count=$((backfill_count+1))
 
-     if [[ "$progress_check" == "" ]]; then
+     if [[ "$progress_check" != "" ]]; then
       echo -e "Backfill progress: $progress_check %, stopped at $date_timestamp, counter: $backfill_count"
      else
       echo -e "Backfill stopped at $date_timestamp, counter: $backfill_count"
