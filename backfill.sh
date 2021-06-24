@@ -57,24 +57,33 @@ until [ $x == 1 ] ; do
        chainweb-data gaps --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
        echo -e "Restarting chainweb-data..."
        kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
-       sleep 600
-       echo -e "Added crone job for gaps..."
-       (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/gaps_output.log 2>&1") | crontab -
+       if [[ ! -f /tmp/crone ]]; then
+         sleep 600
+         echo -e "Added crone job for gaps..."
+         (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/gaps_output.log 2>&1") | crontab -
+         echo -e "Crone jobe added!" >> /tmp/crone
+       else
+         echo -e "Crone jobe already exist..."
+       fi
        exit
      fi
 
      if [[ "$progress_check" == "" && "$backfill_count" == 2 ]] ; then
-       x=1
-       echo -e "Backfill Complited!" >> /tmp/backfill
-       echo -e "Running gaps..."
-       chainweb-data gaps --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
-       echo -e "Restarting chainweb-data..."
-       kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
-       sleep 600
-       echo -e "Added crone job for gaps..."
-       (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/gaps_output.log 2>&1") | crontab -
-       exit
-     fi
-
+        x=1
+        echo -e "Backfill Complited!" >> /tmp/backfill
+        echo -e "Running gaps..."
+        chainweb-data gaps --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
+        echo -e "Restarting chainweb-data..."
+        kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
+        if [[ ! -f /tmp/crone ]]; then
+          sleep 600
+          echo -e "Added crone job for gaps..."
+          (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/gaps_output.log 2>&1") | crontab -
+          echo -e "Crone jobe added!" >> /tmp/crone
+         else
+          echo -e "Crone jobe already exist..."
+        fi
+        exit
+      fi
   fi
 done
