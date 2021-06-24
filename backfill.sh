@@ -61,9 +61,9 @@ until [ $x == 1 ] ; do
          sleep 600
          echo -e "Added crone job for gaps..."
          (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/gaps_output.log 2>&1") | crontab -
-         echo -e "Crone jobe added!" >> /tmp/crone
+         echo -e "Crone job added!" >> /tmp/crone
        else
-         echo -e "Crone jobe already exist..."
+         echo -e "Crone job already exist..."
        fi
        exit
      fi
@@ -79,9 +79,9 @@ until [ $x == 1 ] ; do
           sleep 600
           echo -e "Added crone job for gaps..."
           (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/gaps_output.log 2>&1") | crontab -
-          echo -e "Crone jobe added!" >> /tmp/crone
+          echo -e "Crone job added!" >> /tmp/crone
          else
-          echo -e "Crone jobe already exist..."
+          echo -e "Crone job already exist..."
         fi
         exit
       fi
