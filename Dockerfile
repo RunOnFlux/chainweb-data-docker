@@ -59,7 +59,6 @@ COPY postgresql.conf /etc/postgresql/13/main/postgresql.conf
 VOLUME /var/lib/postgresql/data
 
 RUN chmod 755 /chainweb-data.sh
-RUN chmod 755 /postgres.sh
 RUN chmod 755 /backfill.sh
 RUN chmod 755 /gaps.sh
 RUN chmod 755 /check-health.sh
