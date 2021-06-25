@@ -25,7 +25,11 @@ until [[ "$x" == 1 ]] ; do
 
   if [[ -f /usr/local/bin/chainweb-data ]]; then
    # give time postgres to run
-    sleep 600
+    if [[ "$backfill_count" == 0 ]]; then
+      sleep 600
+    else
+      sleep 10
+    fi
   else
     # Allow time to build chainweb-data binary and for postgres to run
     sleep 1000
