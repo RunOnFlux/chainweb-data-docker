@@ -92,6 +92,6 @@ else
 fi
 
 echo "Postgres start!" >> /tmp/postgres_start
-echo "Backfill start!" >> /tmp/chainwebdata_backfill
+
 
 
