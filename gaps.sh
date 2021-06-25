@@ -2,8 +2,12 @@
 # chainweb-data gaps
 
 if [[ ! -f /tmp/backfill ]]; then
-  echo -e "Backfill not complited...Gaps skipped!"
-  exit
+
+  if [[ ! -f /tmp/bootstrap ]]; then
+    echo -e "Backfill not complited...Gaps skipped!"
+    exit
+  fi
+  
 fi
 
 date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
