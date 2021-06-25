@@ -2,7 +2,7 @@
 # chainweb-data db sync script
 check=$(curl -SsL -k -m 15 https://172.15.0.1:30004/chainweb/0.0/mainnet01/cut | jq .height)
 if [[ "$check" == "" ]]; then
-  until [ $check != "" ] ; do
+  until [[ "$check" != "" ]] ; do
     check=$(curl -SsL -k -m 15 https://172.15.0.1:30004/chainweb/0.0/mainnet01/cut | jq .height)
     echo -e "Waiting for KDA node..."
     sleep 300
@@ -21,7 +21,7 @@ fi
 x=0
 backfill_count=0
 
-until [ $x == 1 ] ; do
+until [[ "$x" == 1 ]] ; do
 
   if [[ -f /usr/local/bin/chainweb-data ]]; then
    # give time postgres to run
