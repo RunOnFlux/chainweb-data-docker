@@ -70,7 +70,7 @@ else
       -C - \
       -o bootstrap.tar.gz "${BOOTSTRAPLOCATIONS[$index]}"
   else
-    echo "None bootstrap was found, will download blockchain from node peers"
+    echo "None bootstrap was found, backfill will be run"
     rm /tmp/bootstrap
   fi
 fi
