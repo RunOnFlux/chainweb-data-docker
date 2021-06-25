@@ -75,7 +75,6 @@ else
   fi
 fi
 
-
 if [[ ! -f /var/lib/postgresql/data/postgresql.conf ]]; then
  echo -e "Postgres initialization..."
  cp -rf /etc/postgresql/13/main/* /var/lib/postgresql/data
@@ -93,4 +92,6 @@ else
 fi
 
 echo "Postgres start!" >> /tmp/postgres_start
+echo "Backfill start!" >> /tmp/chainwebdata_backfill
+
 
