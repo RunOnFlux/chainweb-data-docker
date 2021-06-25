@@ -17,7 +17,7 @@ until [ $x == 1 ] ; do
 echo -e "Waiting for chainwebdata_build marker..."
 
   if [[ -f /tmp/chainwebdata_build ]]; then
-    echo -e "Starting nix && chainweb-data build..."
+    echo -e "Starting chainweb-data server..."
     x=1
   else
     sleep 60
