@@ -30,7 +30,6 @@ done
 
  if [[ -f /usr/local/bin/chainweb-data ]]; then
    node_await
-   echo "Backfill start!" >> /tmp/chainwebdata_backfill
    chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
    exit
  fi
@@ -99,6 +98,5 @@ done
  #starting chainweb-data server
  if [[ -f /usr/local/bin/chainweb-data ]]; then
      node_await
-     echo "Backfill start!" >> /tmp/chainwebdata_backfill
      chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres 
  fi
