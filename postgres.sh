@@ -8,7 +8,7 @@ echo -e "Waiting for postgres marker..."
 sleep 180
 
   if [[ -f /tmp/postgres_start ]]; then
-  echo -e "Starting postgres..."
+    echo -e "Starting postgres..."
     x=1
   fi
 
