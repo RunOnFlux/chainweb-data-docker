@@ -51,6 +51,7 @@ COPY chainweb-data.sh /chainweb-data.sh
 COPY postgres_init.sh /postgres_init.sh
 COPY backfill.sh /backfill.sh
 COPY gaps.sh /gaps.sh
+COPY postgres.sh /postgres.sh
 COPY nix.conf /tmp/nix.conf
 COPY pg_hba.conf /etc/postgresql/13/main/pg_hba.conf
 COPY check-health.sh /check-health.sh
@@ -63,6 +64,8 @@ RUN chmod 755 /backfill.sh
 RUN chmod 755 /gaps.sh
 RUN chmod 755 /check-health.sh
 RUN chmod 755 /postgres_init.sh
+RUN chmod 755 /postgres.sh
+
 
 EXPOSE 8888/tcp
 
