@@ -14,7 +14,6 @@ function node_await() {
 
 x=0
 until [ $x == 1 ] ; do
-
 echo -e "Waiting for chainwebdata_build marker..."
 sleep 180
 
@@ -22,8 +21,6 @@ sleep 180
     echo -e "Starting nix && chainweb-data build..."
     x=1
   fi
-
-
 done
 
 
