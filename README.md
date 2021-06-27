@@ -9,7 +9,7 @@ $ docker run -d -p 8888:8888 -v --restart=always /local/path:/var/lib/postgresql
 ```
 ### Chainweb-data complex solution
 - server 
-- backfill 
+- backfill/bootstrap
 - gaps ( one per day after backfill ) 
 
 ```shell script
