@@ -11,8 +11,20 @@ if [[ "$check" == 2 ]]; then
     status="OFFLINE"
   fi
 
- if [[ -f "/tmp/backfill" ]]; then
-    echo "chainweb-data: running ($status), postgres: running, backfill: complited"
+ if [[ -f /tmp/backfill ]]; then
+ 
+   if [[ -f /tmp/bootstrap ]]; then
+   
+     if [[ -f /var/lib/postgresql/data/bootstrap.tar.gz ]]; then
+       echo "chainweb-data: running ($status), postgres: running, bootstrap: in progress..."    
+     else
+       echo "chainweb-data: running ($status), postgres: running, bootstrap: complited"
+     fi
+     
+   else  
+      echo "chainweb-data: running ($status), postgres: running, backfill: complited"  
+   fi
+    
  else
     progress=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | tail -n1 | egrep -o -E '[0-9]+.{5}[0-9]+.*minute.')
      if [[ "$progress" == "" ]]; then
