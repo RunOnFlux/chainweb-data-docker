@@ -69,9 +69,8 @@ done
  echo "{ allowUnfree = true; }" > /root/.nixpkgs/config.nix
 
  cd /tmp
- wget https://nixos.org/releases/nix/nix-2.3/nix-2.3-x86_64-linux.tar.xz 
- xz -d  nix-2.3-x86_64-linux.tar.xz
- tar -xvf nix-2.3-x86_64-linux.tar
+ wget https://nixos.org/releases/nix/nix-2.3/nix-2.3-x86_64-linux.tar.xz  
+ tar -xf nix-2.3-x86_64-linux.tar.xz
  cd nix-2.3-x86_64-linux
  USER=root ./install --no-daemon
 
