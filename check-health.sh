@@ -13,16 +13,10 @@ if [[ "$check" == 2 ]]; then
 
  if [[ -f /tmp/backfill ]]; then
  
-   if [[ -f /tmp/bootstrap ]]; then
-   
-     if [[ -f /var/lib/postgresql/data/bootstrap.tar.gz ]]; then
-       echo "chainweb-data: running ($status), postgres: running, bootstrap: in progress..."    
-     else
-       echo "chainweb-data: running ($status), postgres: running, bootstrap: complited"
-     fi
-     
-   else  
-      echo "chainweb-data: running ($status), postgres: running, backfill: complited"  
+   if [[ -f /tmp/bootstrap ]]; then 
+     echo "chainweb-data: running ($status), postgres: running, bootstrap: complited" 
+   else
+     echo "chainweb-data: running ($status), postgres: running, backfill: complited" 
    fi
     
  else
@@ -40,6 +34,14 @@ if [[ "$check" == 2 ]]; then
  fi
   
 else
+
+  if [[ -f /tmp/bootstrap ]]; then   
+     if [[ -f /var/lib/postgresql/data/bootstrap.tar.gz ]]; then
+       echo "Initialization: postgres bootstraping..."  
+       exit 
+     fi   
+  fi
+  
   exit 1
 fi
 
