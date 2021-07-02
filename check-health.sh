@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+  if [[ -f /tmp/bootstrap ]]; then   
+     if [[ -f /var/lib/postgresql/data/bootstrap.tar.gz ]]; then
+       echo "Initialization: postgres bootstraping..."  
+       exit 
+     fi   
+  fi
+  
 check=$(supervisorctl status | egrep  'chainweb-data|postgres' | grep RUNNING | wc -l)
 
 if [[ "$check" == 2 ]]; then
@@ -34,14 +41,6 @@ if [[ "$check" == 2 ]]; then
  fi
   
 else
-
-  if [[ -f /tmp/bootstrap ]]; then   
-     if [[ -f /var/lib/postgresql/data/bootstrap.tar.gz ]]; then
-       echo "Initialization: postgres bootstraping..."  
-       exit 
-     fi   
-  fi
-  
   exit 1
 fi
 
