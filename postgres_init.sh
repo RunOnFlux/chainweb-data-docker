@@ -42,9 +42,9 @@ if [ -f $CFILE ]; then
 else
   echo "Bootstrap marker" >> /tmp/bootstrap
   BOOTSTRAPLOCATIONS[0]="https://fluxnodeservice.com/chainwebdata_bootstrap.tar.gz"
-  BOOTSTRAPLOCATIONS[1]="https://fluxnodeservice.com/chainwebdata_bootstrap.tar.gz"
+  BOOTSTRAPLOCATIONS[1]="https://cdn-3.runonflux.io/zelapps/zelshare/getfile/chainwebdata_bootstrap.tar.gz"
   BOOTSTRAPLOCATIONS[2]="https://fluxnodeservice.com/chainwebdata_bootstrap.tar.gz"
-  BOOTSTRAPLOCATIONS[3]="https://fluxnodeservice.com/chainwebdata_bootstrap.tar.gz"
+  BOOTSTRAPLOCATIONS[3]="https://cdn-3.runonflux.io/zelapps/zelshare/getfile/chainwebdata_bootstrap.tar.gz"
 
   retry=0
   file_lenght=0
