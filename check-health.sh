@@ -27,11 +27,11 @@ if [[ "$check" == 2 ]]; then
    fi
     
  else
-    progress=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | tail -n1 | egrep -o -E '[0-9]+.{5}[0-9]+.*minute.')
+    progress=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | tail -n1 | egrep -o -E 'Progress: [0-9]+.{5}[0-9]+.*minute.')
      if [[ "$progress" == "" ]]; then
        progress='awaiting...'
      else    
-       freez_check=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | tail -n3 | egrep -o -E '[0-9]+\.[0-9]+' | awk '{sum += $1} END {print sum-(3*$1)}')
+       freez_check=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | tail -n3 | egrep -o -E 'Progress: [0-9]+.{5}[0-9]+.*minute.' | egrep -o -E '[0-9]+\.[0-9]+' | awk '{sum += $1} END {print sum-(3*$1)}')
        if [[ "$freez_check" == 0 ]]; then
           echo "Postgres info: insert query hangs, backfill not finished! PC restart required"
           exit 1
