@@ -37,7 +37,7 @@ if [[ "$check" == 2 ]]; then
           exit 1
        fi      
      fi  
-     echo "chainweb-data: running ($status), postgres: running, backfill: running $progress"
+     echo "chainweb-data: running ($status), postgres: running, backfill: running | $progress"
  fi
   
 else
