@@ -29,7 +29,7 @@ done
 
  if [[ -f /usr/local/bin/chainweb-data ]]; then
    node_await
-   chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
+   chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
    exit
  fi
 
@@ -87,7 +87,6 @@ done
  cd /tmp
  git clone https://github.com/kadena-io/chainweb-data
  cd chainweb-data
- git checkout v1.2.0
  nix-build
  mv /tmp/chainweb-data/result/bin/chainweb-data /usr/local/bin/chainweb-data
  sudo chmod 755 /usr/local/bin/chainweb-data
@@ -97,5 +96,5 @@ done
  #starting chainweb-data server
  if [[ -f /usr/local/bin/chainweb-data ]]; then
      node_await
-     chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
+     chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
  fi
