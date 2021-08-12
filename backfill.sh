@@ -60,7 +60,7 @@ until [[ "$x" == 1 ]] ; do
        kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
        if [[ ! -f /tmp/crone ]]; then
          sleep 120
-         echo -e "Added crone job for fill gaps..."
+         echo -e "Added crone job for fill as gaps..."
          (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/fill_output.log 2>&1") | crontab -
          echo -e "Cron job added!" >> /tmp/crone
        else
@@ -76,7 +76,7 @@ until [[ "$x" == 1 ]] ; do
         kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
         if [[ ! -f /tmp/crone ]]; then
           sleep 120
-          echo -e "Added crone job for fill..."
+          echo -e "Added crone job for fill as gaps..."
           (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/fill_output.log 2>&1") | crontab -
           echo -e "Crone job added!" >> /tmp/crone
          else
