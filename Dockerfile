@@ -1,9 +1,7 @@
 # syntax=docker/dockerfile:experimental
-
 # Run as
 #
 # --ulimit nofile=64000:64000
-
 # BUILD PARAMTERS
 ARG UBUNTUVER=20.04
 
