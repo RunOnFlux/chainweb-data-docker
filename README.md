@@ -9,8 +9,7 @@ $ docker run -d -p 8888:8888 -v --restart=always /local/path:/var/lib/postgresql
 ```
 ### Chainweb-data complex solution
 - server 
-- backfill/bootstrap
-- gaps ( one per day after backfill ) 
+- fill
 
 ```shell script
 Node info: service-port=30005 --p2p-port=30004
