@@ -29,7 +29,7 @@ done
 
  if [[ -f /usr/local/bin/chainweb-data ]]; then
    node_await
-   chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres
+   chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
    exit
  fi
 
@@ -96,5 +96,5 @@ done
  #starting chainweb-data server
  if [[ -f /usr/local/bin/chainweb-data ]]; then
      node_await
-     chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres 
+     chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=30005 --p2p-port=30004 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
  fi
