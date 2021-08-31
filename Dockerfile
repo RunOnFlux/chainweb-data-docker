@@ -67,7 +67,7 @@ RUN chmod 755 /postgres.sh
 
 EXPOSE 8888/tcp
 
-HEALTHCHECK --start-period=10m --interval=1m --retries=5 --timeout=20s CMD /check-health.sh
+HEALTHCHECK --start-period=10m --interval=5m --retries=5 --timeout=20s CMD /check-health.sh
 
 WORKDIR "/var/lib/postgresql/data"
 
