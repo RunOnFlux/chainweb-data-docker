@@ -53,7 +53,7 @@ until [[ "$x" == 1 ]] ; do
       echo -e "Fill stopped at $date_timestamp, counter: $backfill_count"
      fi
 
-     if [[ "$progress_check" -ge 99 || "$fill_complite" ]]; then
+     if [[ "$progress_check" -ge 99 || "$fill_complite" != "" ]]; then
        x=1
        echo -e "Fill Complited!" >> /tmp/backfill
        echo -e "Restarting chainweb-data..."
