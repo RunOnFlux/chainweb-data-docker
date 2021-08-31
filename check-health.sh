@@ -12,21 +12,21 @@ if [[ "$check" == 2 ]]; then
   fi
 
  if [[ -f /tmp/backfill ]]; then
-     echo "chainweb-data: running ($status), postgres: running, fill: complited"     
+     echo "chainweb-data: running ($status), postgres: running, fill: complited"
  else
-    progress=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | tail -n1 | egrep -o -E 'Progress: [0-9]+.{5}[0-9]+.*')
+    progress=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*')
      if [[ "$progress" == "" ]]; then
        progress='awaiting...'
-     else    
-       freez_check=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | tail -n3 | egrep -o -E 'Progress: [0-9]+.{5}[0-9]+.*' | egrep -o -E '[0-9]+\.[0-9]+' | awk '{sum += $1} END {print sum-(3*$1)}')
+     else
+       freez_check=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n3 | awk '{sum += $1} END {print sum-(3*$1)}')
        if [[ "$freez_check" == 0 ]]; then
           echo "Postgres info: insert query hangs, fill not finished! PC restart required"
           exit 1
-       fi      
-     fi  
+       fi
+     fi
      echo "chainweb-data: running ($status), postgres: running, fill: running | $progress"
  fi
-  
+
 else
   exit 1
 fi
