@@ -14,7 +14,7 @@ if [[ "$check" == 2 ]]; then
  if [[ -f /tmp/backfill ]]; then
      echo "chainweb-data: running ($status), postgres: running, fill: complited"
  else
-    progress=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*')
+    progress=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | egrep -o -E 'Progress: [0-9]+.{5}[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
      if [[ "$progress" == "" ]]; then
        progress='awaiting...'
      else
