@@ -12,7 +12,7 @@ $ docker run -d -p 8888:8888 --restart=always -v /local/path:/var/lib/postgresql
 - fill
 
 ```shell script
-Node info: service-port=30005 --p2p-port=30004
+Node info: service-port=31351 --p2p-port=31350
 ```
 
 ### Health check
