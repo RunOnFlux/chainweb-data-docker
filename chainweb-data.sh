@@ -85,7 +85,7 @@ done
 
  #cloning && build  chainweb-data
  cd /tmp
- git clone https://github.com/kadena-io/chainweb-data
+ git clone https://github.com/runonflux/chainweb-data
  cd chainweb-data
  nix-build
  mv /tmp/chainweb-data/result/bin/chainweb-data /usr/local/bin/chainweb-data
