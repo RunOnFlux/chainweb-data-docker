@@ -40,10 +40,13 @@ RUN apt-get update -y && apt-get upgrade -y \
  && dpkg-reconfigure -f noninteractive locales \
  && rm -rf /var/lib/apt/lists/*
  
- WORKDIR "/usr/local/bin"
- RUN wget https://github.com/kadena-io/chainweb-data/releases/download/v2.1.1/chainweb-data-build-ubuntu-22.04.zip \ 
- && unzip chainweb-data-build-ubuntu-22.04.zip \
- && chmod +x chainweb-data
+WORKDIR "/usr/local/bin"
+
+RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq -r .assets[].browser_download_url | grep 22.04) \
+&& echo "Downloading file: ${PACKAGE}" \
+&& wget "${PACKAGE}" \
+&& unzip * \
+&& chmod +x chainweb-data
  
 RUN rm /etc/postgresql/15/main/pg_hba.conf
 RUN rm /etc/postgresql/15/main/postgresql.conf
