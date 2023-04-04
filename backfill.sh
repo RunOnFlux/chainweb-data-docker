@@ -1,12 +1,11 @@
 #!/bin/bash
 # chainweb-data db sync script
 GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
-echo $GATEWAYIP
 
-check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut | jq .height)
+check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null)
 if [[ "$check" == "" ]]; then
   until [[ "$check" != "" ]] ; do
-    check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut | jq .height)
+    check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null) 
     echo -e "Waiting for KDA node..."
     sleep 300
   done
@@ -24,21 +23,12 @@ x=0
 backfill_count=0
 
 until [[ "$x" == 1 ]] ; do
-
-  if [[ -f /usr/local/bin/chainweb-data ]]; then
-   # give time postgres to run
-    if [[ "$backfill_count" == 0 ]]; then
-      sleep 600
-    else
-      sleep 10
-    fi
+  if [[ "$backfill_count" == 0 ]]; then
+    sleep 60
   else
-    # Allow time to build chainweb-data binary and for postgres to run
-    sleep 1000
+    sleep 35
   fi
-
   server_check=$(ps aux | grep idle | wc -l)
-
   if [[ "$server_check" == 2 ]]; then
 
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
