@@ -56,7 +56,6 @@ COPY postgres_init.sh /postgres_init.sh
 COPY backfill.sh /backfill.sh
 COPY gaps.sh /gaps.sh
 COPY postgres.sh /postgres.sh
-COPY nix.conf /tmp/nix.conf
 COPY pg_hba.conf /etc/postgresql/15/main/pg_hba.conf
 COPY check-health.sh /check-health.sh
 COPY postgresql.conf /etc/postgresql/15/main/postgresql.conf
