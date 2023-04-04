@@ -30,7 +30,7 @@ ENV PG_VERSION=13 \
     NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
     PATH=/root/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-RUN apt-get update \
+RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y acl sudo locales \
       postgresql-${PG_VERSION} postgresql-client-${PG_VERSION} postgresql-contrib-${PG_VERSION} \
  && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
