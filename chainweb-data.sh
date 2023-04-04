@@ -14,6 +14,7 @@ function node_await() {
 }
 
 sleep 20
+echo -e "Starting chainweb-data..."
 node_await
 chainweb-data server --port 8888 --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
 exit
