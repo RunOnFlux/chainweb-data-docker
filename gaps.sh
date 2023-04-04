@@ -1,6 +1,5 @@
 #!/bin/bash
 GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
-echo $GATEWAYIP
 
 if [[ ! -f /tmp/backfill ]]; then
     echo -e "Fill not complited...skipped..."  
