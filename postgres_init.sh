@@ -17,7 +17,5 @@ else
 fi
 
 echo "Postgres start..." >> /tmp/postgres_start
-sleep 180
-echo "Chainweb-data build!" >> /tmp/chainwebdata_build
 
 
