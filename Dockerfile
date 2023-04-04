@@ -3,21 +3,24 @@
 #
 # --ulimit nofile=64000:64000
 # BUILD PARAMTERS
-ARG UBUNTUVER=20.04
+ARG UBUNTUVER=22.04
 FROM ubuntu:${UBUNTUVER}
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update -y \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl gnupg git cron lsof jq supervisor \
+RUN apt-get update -y \
+ && apt-get install -yq tzdata \
+ && ln -fs /usr/share/zoneinfo/Asia/Taipei /etc/localtime \
+ && dpkg-reconfigure -f noninteractive tzdata \ 
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl unzip gnupg git cron lsof jq supervisor \
  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
- && echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-
+ && echo "deb http://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+ 
 RUN set -eux; \
 	groupadd -r postgres --gid=999; \
 	useradd -r -g postgres --uid=999 --home-dir=/var/lib/postgresql --shell=/bin/bash postgres; \
 	mkdir -p /var/lib/postgresql; \
 	chown -R postgres:postgres /var/lib/postgresql
 
-ENV PG_VERSION=13 \
+ENV PG_VERSION=15 \
     PG_USER=postgres \
     PG_LOGDIR=/var/log/postgresql \
     PGDATA=/var/lib/postgresql/data \
@@ -30,16 +33,23 @@ ENV PG_VERSION=13 \
     NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
     PATH=/root/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y acl sudo locales \
-      postgresql-${PG_VERSION} postgresql-client-${PG_VERSION} postgresql-contrib-${PG_VERSION} \
+RUN apt-get update -y && apt-get upgrade -y \
+ && apt-get install -y acl sudo locales postgresql-${PG_VERSION} postgresql-client-${PG_VERSION} postgresql-contrib-${PG_VERSION} \
  && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
  && locale-gen en_US.UTF-8 \
- && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales \
+ && dpkg-reconfigure -f noninteractive locales \
  && rm -rf /var/lib/apt/lists/*
+ 
+WORKDIR "/usr/local/bin"
 
-RUN rm /etc/postgresql/13/main/pg_hba.conf
-RUN rm /etc/postgresql/13/main/postgresql.conf
+RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq -r .assets[].browser_download_url | grep 22.04) \
+&& echo "Downloading file: ${PACKAGE}" \
+&& wget "${PACKAGE}" \
+&& unzip * \
+&& chmod +x chainweb-data
+ 
+RUN rm /etc/postgresql/15/main/pg_hba.conf
+RUN rm /etc/postgresql/15/main/postgresql.conf
 
 RUN mkdir -p /var/log/supervisor
 
@@ -49,10 +59,9 @@ COPY postgres_init.sh /postgres_init.sh
 COPY backfill.sh /backfill.sh
 COPY gaps.sh /gaps.sh
 COPY postgres.sh /postgres.sh
-COPY nix.conf /tmp/nix.conf
-COPY pg_hba.conf /etc/postgresql/13/main/pg_hba.conf
+COPY pg_hba.conf /etc/postgresql/15/main/pg_hba.conf
 COPY check-health.sh /check-health.sh
-COPY postgresql.conf /etc/postgresql/13/main/postgresql.conf
+COPY postgresql.conf /etc/postgresql/15/main/postgresql.conf
 
 VOLUME /var/lib/postgresql/data
 
