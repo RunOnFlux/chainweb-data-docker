@@ -2,8 +2,8 @@
 
 if [[ ! -f /var/lib/postgresql/data/postgresql.conf ]]; then
  echo -e "Postgres initialization..."
- cp -rf /etc/postgresql/13/main/* /var/lib/postgresql/data
- cp -rf /var/lib/postgresql/13/main/* /var/lib/postgresql/data
+ cp -rf /etc/postgresql/14/main/* /var/lib/postgresql/data
+ cp -rf /var/lib/postgresql/14/main/* /var/lib/postgresql/data
  chown -R postgres:postgres /var/lib/postgresql/data
  chmod 700 -R /var/lib/postgresql/data/*
  chmod 700 -R /var/lib/postgresql/data

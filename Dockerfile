@@ -15,7 +15,8 @@ RUN set -eux; \
 	mkdir -p /var/lib/postgresql; \
 	chown -R postgres:postgres /var/lib/postgresql
 
-ENV PG_USER=postgres \
+ENV PG_VERSION=14 \
+    PG_USER=postgres \
     PG_LOGDIR=/var/log/postgresql \
     PGDATA=/var/lib/postgresql/data \
     FONTCONFIG_FILE=/etc/fonts/fonts.conf \
@@ -35,8 +36,8 @@ RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales \
  && rm -rf /var/lib/apt/lists/*
 
-# RUN rm /etc/postgresql/13/main/pg_hba.conf
-# RUN rm /etc/postgresql/13/main/postgresql.conf
+RUN rm /etc/postgresql/14/main/pg_hba.conf
+RUN rm /etc/postgresql/14/main/postgresql.conf
 
 RUN mkdir -p /var/log/supervisor
 
@@ -47,9 +48,9 @@ COPY backfill.sh /backfill.sh
 COPY gaps.sh /gaps.sh
 COPY postgres.sh /postgres.sh
 COPY nix.conf /tmp/nix.conf
-COPY pg_hba.conf /etc/postgresql/13/main/pg_hba.conf
+COPY pg_hba.conf /etc/postgresql/14/main/pg_hba.conf
 COPY check-health.sh /check-health.sh
-COPY postgresql.conf /etc/postgresql/13/main/postgresql.conf
+COPY postgresql.conf /etc/postgresql/14/main/postgresql.conf
 
 VOLUME /var/lib/postgresql/data
 
