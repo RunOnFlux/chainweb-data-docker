@@ -37,7 +37,7 @@ RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y acl sudo locales postgresql-${PG_VERSION} postgresql-client-${PG_VERSION} postgresql-contrib-${PG_VERSION} \
  && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
  && locale-gen en_US.UTF-8 \
- && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales \
+ && dpkg-reconfigure -f noninteractive locales \
  && rm -rf /var/lib/apt/lists/*
 
 RUN rm /etc/postgresql/13/main/pg_hba.conf
