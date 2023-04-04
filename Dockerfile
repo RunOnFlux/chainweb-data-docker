@@ -40,7 +40,7 @@ RUN apt-get update -y && apt-get upgrade -y \
  && dpkg-reconfigure -f noninteractive locales \
  && rm -rf /var/lib/apt/lists/*
  
- WORKDIR "/var/lib/postgresql/data"
+ WORKDIR "/usr/local/bin"
  RUN wget https://github.com/kadena-io/chainweb-data/releases/download/v2.1.1/chainweb-data-build-ubuntu-22.04.zip \ 
  && unzip chainweb-data-build-ubuntu-22.04.zip \
  && chmod +x chainweb-data
