@@ -1,9 +1,11 @@
 #!/bin/bash
 # chainweb-data db sync script
-check=$(curl -SsL -k -m 15 https://172.15.0.1:31350/chainweb/0.0/mainnet01/cut | jq .height)
+GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
+
+check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut | jq .height)
 if [[ "$check" == "" ]]; then
   until [[ "$check" != "" ]] ; do
-    check=$(curl -SsL -k -m 15 https://172.15.0.1:31350/chainweb/0.0/mainnet01/cut | jq .height)
+    check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut | jq .height)
     echo -e "Waiting for KDA node..."
     sleep 300
   done
@@ -11,7 +13,7 @@ fi
 
 if [[ -f /tmp/backfill ]]; then
     echo -e "Running fill as gaps..."
-    chainweb-data fill --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres
+    chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres
     echo -e "Restarting chainweb-data..."
     kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
     exit
@@ -40,7 +42,7 @@ until [[ "$x" == 1 ]] ; do
 
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "Fill started at $date_timestamp"
-    chainweb-data fill --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres +RTS -N
+    chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres +RTS -N
     sleep 10
     progress_check=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
