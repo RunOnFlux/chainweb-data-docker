@@ -13,9 +13,8 @@ function node_await() {
  fi
 }
 
- sleep 20
- if [[ -f /usr/local/bin/chainweb-data ]]; then
-   node_await
-   chainweb-data server --port 8888 --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
-   exit
- fi
+sleep 20
+node_await
+chainweb-data server --port 8888 --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
+exit
+ 
