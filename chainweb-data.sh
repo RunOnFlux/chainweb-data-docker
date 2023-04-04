@@ -13,17 +13,7 @@ function node_await() {
  fi
 }
 
-x=0
-until [ $x == 1 ] ; do
-  echo -e "Waiting for chainwebdata_build marker..."
-  if [[ -f /tmp/chainwebdata_build ]]; then
-    echo -e "Starting chainweb-data server..."
-    x=1
-  else
-    sleep 60
-  fi
-done
-
+ sleep 20
  if [[ -f /usr/local/bin/chainweb-data ]]; then
    node_await
    chainweb-data server --port 8888 --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
