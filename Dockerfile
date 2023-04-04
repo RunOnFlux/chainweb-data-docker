@@ -3,7 +3,7 @@
 #
 # --ulimit nofile=64000:64000
 # BUILD PARAMTERS
-ARG UBUNTUVER=20.04
+ARG UBUNTUVER=22.04
 FROM ubuntu:${UBUNTUVER}
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -y \
