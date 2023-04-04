@@ -1,6 +1,6 @@
 #!/bin/bash
 # chainweb-data db sync script
-GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$//')
+GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
 
 check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut | jq .height)
 if [[ "$check" == "" ]]; then
