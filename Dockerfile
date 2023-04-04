@@ -12,8 +12,8 @@ RUN apt-get update -y \
  && dpkg-reconfigure -f noninteractive tzdata \ 
  && DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl gnupg git cron lsof jq supervisor \
  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
- && echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-
+ && echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+ 
 RUN set -eux; \
 	groupadd -r postgres --gid=999; \
 	useradd -r -g postgres --uid=999 --home-dir=/var/lib/postgresql --shell=/bin/bash postgres; \
