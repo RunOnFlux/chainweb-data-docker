@@ -20,7 +20,7 @@ RUN set -eux; \
 	mkdir -p /var/lib/postgresql; \
 	chown -R postgres:postgres /var/lib/postgresql
 
-ENV PG_VERSION=13 \
+ENV PG_VERSION=15 \
     PG_USER=postgres \
     PG_LOGDIR=/var/log/postgresql \
     PGDATA=/var/lib/postgresql/data \
