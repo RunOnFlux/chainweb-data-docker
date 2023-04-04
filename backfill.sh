@@ -23,13 +23,9 @@ x=0
 backfill_count=0
 
 until [[ "$x" == 1 ]] ; do
-  if [[ "$backfill_count" == 0 ]]; then
-    sleep 60
-  else
-    sleep 35
-  fi
+  sleep 45
   server_check=$(ps aux | grep idle | wc -l)
-  if [[ "$server_check" == 2 ]]; then
+  if [[ "$server_check" -ge 2 ]]; then
 
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "Fill started at $date_timestamp"
