@@ -1,11 +1,12 @@
 #!/bin/bash
 # chainweb-data init script
+GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$//')
 
 function node_await() {
- check=$(curl -SsL -k -m 15 https://172.15.0.1:31350/chainweb/0.0/mainnet01/cut | jq .height)
+ check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut | jq .height)
  if [[ "$check" == "" ]]; then
    until [ $check != "" ] ; do
-     check=$(curl -SsL -k -m 15 https://172.15.0.1:31350/chainweb/0.0/mainnet01/cut | jq .height)
+     check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut | jq .height)
      echo -e "Waiting for KDA node..."
      sleep 200
    done
@@ -29,7 +30,7 @@ done
 
  if [[ -f /usr/local/bin/chainweb-data ]]; then
    node_await
-   chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
+   chainweb-data server --port 8888 --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
    exit
  fi
 
@@ -96,5 +97,5 @@ done
  #starting chainweb-data server
  if [[ -f /usr/local/bin/chainweb-data ]]; then
      node_await
-     chainweb-data server --port 8888 --service-host=172.15.0.1 --p2p-host=172.15.0.1 --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
+     chainweb-data server --port 8888 --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres -m
  fi
