@@ -17,8 +17,7 @@ RUN set -eux; \
 	mkdir -p /var/lib/postgresql; \
 	chown -R postgres:postgres /var/lib/postgresql
 
-ENV PG_VERSION=13 \
-    PG_USER=postgres \
+ENV PG_USER=postgres \
     PG_LOGDIR=/var/log/postgresql \
     PGDATA=/var/lib/postgresql/data \
     FONTCONFIG_FILE=/etc/fonts/fonts.conf \
@@ -32,14 +31,14 @@ ENV PG_VERSION=13 \
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y acl sudo locales \
-      postgresql-${PG_VERSION} postgresql-client-${PG_VERSION} postgresql-contrib-${PG_VERSION} \
+      postgresql postgresql-client postgresql-contrib \
  && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
  && locale-gen en_US.UTF-8 \
  && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales \
  && rm -rf /var/lib/apt/lists/*
 
-RUN rm /etc/postgresql/13/main/pg_hba.conf
-RUN rm /etc/postgresql/13/main/postgresql.conf
+# RUN rm /etc/postgresql/13/main/pg_hba.conf
+# RUN rm /etc/postgresql/13/main/postgresql.conf
 
 RUN mkdir -p /var/log/supervisor
 
