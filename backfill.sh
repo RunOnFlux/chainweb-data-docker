@@ -59,7 +59,7 @@ until [[ "$x" == 1 ]] ; do
      fi
 
 
-     if [[ "$backfill_count" == 2 ]] ; then
+     if [[ "$backfill_count" == 8 ]] ; then
         x=1
         echo -e "Fill Complited!" >> /tmp/backfill
         echo -e "Restarting chainweb-data..."
