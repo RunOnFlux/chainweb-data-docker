@@ -46,7 +46,8 @@ done
   curl \
   locales \
   sudo \
-  xz-utils
+  xz-utils \
+  nix-bin
 
  localedef -f UTF-8 -i en_US -A /usr/share/locale/locale.alias -c en_US.UTF-8
  groupadd -g 30000 --system nixbld
@@ -70,11 +71,11 @@ done
  mv /tmp/nix.conf /root/.config/nix/nix.conf
  echo "{ allowUnfree = true; }" > /root/.nixpkgs/config.nix
 
- cd /tmp
- wget https://nixos.org/releases/nix/nix-2.3/nix-2.3-x86_64-linux.tar.xz  
- tar -xf nix-2.3-x86_64-linux.tar.xz
- cd nix-2.3-x86_64-linux
- USER=root ./install --no-daemon
+#  cd /tmp
+#  wget https://releases.nixos.org/nix/nix-2.9.2/nix-2.9.2-x86_64-linux.tar.xz
+#  tar -xf nix-2.9.2-x86_64-linux.tar.xz
+#  cd nix-2.9.2-x86_64-linux
+#  USER=root ./install --no-daemon
 
  export NIX_PATH=nixpkgs=/root/.nix-defexpr/channels/nixpkgs:/root/.nix-defexpr/channels
  export NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
