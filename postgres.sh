@@ -5,6 +5,7 @@ until [[ "$x" == 1 ]] ; do
   echo -e "Waiting for postgres marker..."
   if [[ -f /tmp/postgres_start ]]; then
     echo -e "Starting postgres..."
+    sleep 10
     x=1
   else
     sleep 15
