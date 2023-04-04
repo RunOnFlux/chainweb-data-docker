@@ -19,7 +19,7 @@ fi
 x=0
 backfill_count=0
 until [[ "$x" == 1 ]] ; do
-  sleep 45
+  sleep 60
   server_check=$(ps aux | grep idle | wc -l)
   if [[ "$server_check" -ge 2 ]]; then
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
