@@ -87,14 +87,14 @@ done
  nixpkgs.nix
 
  #cloning && build  chainweb-data
- cd /tmp
- git clone https://github.com/runonflux/chainweb-data
- cd chainweb-data
- nix-build
- mv /tmp/chainweb-data/result/bin/chainweb-data /usr/local/bin/chainweb-data
- sudo chmod 755 /usr/local/bin/chainweb-data
- cd /tmp
- rm -rf nix*
+ #cd /tmp
+ #git clone https://github.com/runonflux/chainweb-data
+ #cd chainweb-data
+ #nix-build
+ #mv /tmp/chainweb-data/result/bin/chainweb-data /usr/local/bin/chainweb-data
+ #sudo chmod 755 /usr/local/bin/chainweb-data
+ #cd /tmp
+ #rm -rf nix*
 
  #starting chainweb-data server
  if [[ -f /usr/local/bin/chainweb-data ]]; then
