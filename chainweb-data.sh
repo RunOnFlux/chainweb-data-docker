@@ -3,10 +3,10 @@
 GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
 
 function node_await() {
- check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut | jq .height)
+ check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut  2>/dev/null | jq .height 2>/dev/null)
  if [[ "$check" == "" ]]; then
    until [ $check != "" ] ; do
-     check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut | jq .height)
+     check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null)
      echo -e "Waiting for KDA node..."
      sleep 200
    done
