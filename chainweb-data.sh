@@ -50,7 +50,7 @@ done
   nix-bin
 
  localedef -f UTF-8 -i en_US -A /usr/share/locale/locale.alias -c en_US.UTF-8
- groupadd -g 30000 --system nixbld
+ groupadd -g 30000 nixbld
 
  for i in $(seq 1 32); do
   useradd \
@@ -58,7 +58,6 @@ done
     --gid 30000 \
     --groups nixbld \
     --no-user-group \
-    --system \
     --shell /usr/sbin/nologin \
     --uid $((30000 + i)) \
     --password "!" \
