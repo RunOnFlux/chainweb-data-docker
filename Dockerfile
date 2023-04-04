@@ -6,7 +6,7 @@
 ARG UBUNTUVER=22.04
 FROM ubuntu:${UBUNTUVER}
 
-RUN apt-get update -y \
+RUN apt-get update -y && apt-get upgrade -y \
  && apt-get install -yq tzdata \
  && ln -fs /usr/share/zoneinfo/Asia/Taipei /etc/localtime \
  && dpkg-reconfigure -f noninteractive tzdata \ 
@@ -28,12 +28,9 @@ ENV PG_VERSION=15 \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     LC_CTYPE=en_US.UTF-8 \
-    LOCALE_ARCHIVE=/usr/lib/locale/locale-archive \
-    NIX_PATH=nixpkgs=/root/.nix-defexpr/channels/nixpkgs:/root/.nix-defexpr/channels \
-    NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
-    PATH=/root/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 
-RUN apt-get update -y && apt-get upgrade -y \
+RUN apt-get update -y \
  && apt-get install -y acl sudo locales postgresql-${PG_VERSION} postgresql-client-${PG_VERSION} postgresql-contrib-${PG_VERSION} \
  && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
  && locale-gen en_US.UTF-8 \
@@ -50,7 +47,6 @@ RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-dat
  
 RUN rm /etc/postgresql/15/main/pg_hba.conf
 RUN rm /etc/postgresql/15/main/postgresql.conf
-
 RUN mkdir -p /var/log/supervisor
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
