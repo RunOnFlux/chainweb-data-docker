@@ -1,8 +1,3 @@
-# syntax=docker/dockerfile:experimental
-# Run as
-#
-# --ulimit nofile=64000:64000
-# BUILD PARAMTERS
 ARG UBUNTUVER=22.04
 FROM ubuntu:${UBUNTUVER}
 
@@ -36,7 +31,7 @@ RUN apt-get update -y \
  
 WORKDIR "/usr/local/bin"
 
-RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq -r .assets[].browser_download_url | grep 22.04) \
+RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq -r .assets[].browser_download_url | grep "$UBUNTUVER") \
 && echo "Downloading file: ${PACKAGE}" \
 && wget "${PACKAGE}" \
 && unzip * \
