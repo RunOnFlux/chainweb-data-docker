@@ -6,7 +6,7 @@
 ARG UBUNTUVER=22.04
 FROM ubuntu:${UBUNTUVER}
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
+RUN apt-get update -y && apt-get upgrade -y \
  ##&& apt-get install -yq tzdata \
  ##&& ln -fs /usr/share/zoneinfo/Asia/Taipei /etc/localtime \
  ## && dpkg-reconfigure -f noninteractive tzdata \ 
@@ -30,7 +30,7 @@ ENV PG_VERSION=15 \
     LC_CTYPE=en_US.UTF-8 \
     LOCALE_ARCHIVE=/usr/lib/locale/locale-archive 
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update -y \
+RUN apt-get update -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y acl sudo locales postgresql-${PG_VERSION} postgresql-client-${PG_VERSION} postgresql-contrib-${PG_VERSION} \
  && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
  && locale-gen en_US.UTF-8 \
