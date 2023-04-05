@@ -2,7 +2,7 @@ ARG UBUNTUVER=22.04
 FROM ubuntu:${UBUNTUVER}
 
 RUN apt-get update -y && apt-get upgrade -y \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl sudo unzip dirmngr gnupg git cron lsof jq supervisor lsb-release \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl unzip dirmngr gnupg git cron lsof jq supervisor lsb-release \
  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
  && mkdir -p /usr/share/keyrings \
  && mkdir -p /.gnupg \
@@ -18,18 +18,10 @@ ENV PG_VERSION=15 \
     PG_USER=postgres \
     PG_LOGDIR=/var/log/postgresql \
     PGDATA=/var/lib/postgresql/data \
-    FONTCONFIG_FILE=/etc/fonts/fonts.conf \
-    LANG=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8 \
-    LC_CTYPE=en_US.UTF-8 \
-    LOCALE_ARCHIVE=/usr/lib/locale/locale-archive \
     UBUNTUVER=22.04
 
 RUN apt-get update -y \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y acl locales postgresql-${PG_VERSION} postgresql-client-${PG_VERSION} postgresql-contrib-${PG_VERSION} \
- && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
- && locale-gen en_US.UTF-8 \
- && dpkg-reconfigure -f noninteractive locales \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql-${PG_VERSION} postgresql-client-${PG_VERSION} postgresql-contrib-${PG_VERSION} \
  && rm -rf /var/lib/apt/lists/*
  
 WORKDIR "/usr/local/bin"
