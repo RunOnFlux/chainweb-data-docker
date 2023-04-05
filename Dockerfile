@@ -3,7 +3,8 @@ FROM ubuntu:${UBUNTUVER}
 
 RUN apt-get update -y && apt-get upgrade -y \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl unzip gnupg git cron lsof jq supervisor lsb-release \
- && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list > /dev/null 2>&1 \
+ && echo $(lsb_release -cs) \
+ && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list \
  && gpg --no-default-keyring --keyring /usr/share/keyrings/postgresql-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 7FCC7D46ACCC4CF8
  
 RUN set -eux; \
