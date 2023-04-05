@@ -7,9 +7,6 @@ ARG UBUNTUVER=22.04
 FROM ubuntu:${UBUNTUVER}
 
 RUN apt-get update -y && apt-get upgrade -y \
- ##&& apt-get install -yq tzdata \
- ##&& ln -fs /usr/share/zoneinfo/Asia/Taipei /etc/localtime \
- ## && dpkg-reconfigure -f noninteractive tzdata \ 
  && DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl unzip gnupg git cron lsof jq supervisor \
  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
  && echo "deb http://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list
