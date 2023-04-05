@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # postgres luncher
 x=0
 until [[ "$x" == 1 ]] ; do
@@ -11,4 +11,4 @@ until [[ "$x" == 1 ]] ; do
     sleep 15
   fi
 done
-/usr/lib/postgresql/15/bin/postgres -D /var/lib/postgresql/data -c config_file=/var/lib/postgresql/data/postgresql.conf
+/usr/lib/postgresql/${PG_VERSION}/bin/postgres -D /var/lib/postgresql/data -c config_file=/var/lib/postgresql/data/postgresql.conf
