@@ -43,6 +43,7 @@ RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-dat
 && echo "Downloading file: ${PACKAGE}" \
 && wget "${PACKAGE}" \
 && unzip * \
+&& rm -rf *.zip \
 && chmod +x chainweb-data
  
 RUN rm /etc/postgresql/15/main/pg_hba.conf
