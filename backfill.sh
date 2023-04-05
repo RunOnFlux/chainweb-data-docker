@@ -19,7 +19,12 @@ fi
 x=0
 backfill_count=0
 until [[ "$x" == 1 ]] ; do
-  sleep 120
+  if [[ "$backfill_count" == 0 ]]; then
+    echo "Initial waiting to receive a block on each chain..."
+    sleep 120
+  else
+    sleep 60
+  fi
   server_check=$(ps aux | grep idle | wc -l)
   if [[ "$server_check" -ge 2 ]]; then
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
