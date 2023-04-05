@@ -43,8 +43,8 @@ RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-dat
 && rm -rf *.zip \
 && chmod +x chainweb-data
  
-RUN rm /etc/postgresql/15/main/pg_hba.conf
-RUN rm /etc/postgresql/15/main/postgresql.conf
+RUN rm /etc/postgresql/${PG_VERSION}/main/pg_hba.conf
+RUN rm /etc/postgresql/${PG_VERSION}/main/postgresql.conf
 RUN mkdir -p /var/log/supervisor
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
@@ -53,9 +53,9 @@ COPY postgres_init.sh /postgres_init.sh
 COPY backfill.sh /backfill.sh
 COPY gaps.sh /gaps.sh
 COPY postgres.sh /postgres.sh
-COPY pg_hba.conf /etc/postgresql/15/main/pg_hba.conf
+COPY pg_hba.conf /etc/postgresql/${PG_VERSION}/main/pg_hba.conf
 COPY check-health.sh /check-health.sh
-COPY postgresql.conf /etc/postgresql/15/main/postgresql.conf
+COPY postgresql.conf /etc/postgresql/${PG_VERSION}/main/postgresql.conf
 
 VOLUME /var/lib/postgresql/data
 
