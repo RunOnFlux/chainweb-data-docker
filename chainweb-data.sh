@@ -21,8 +21,8 @@ function update() {
    remote_version=$(jq -r .tag_name <<< "$remote_info")
    if [[ "$local_version" != "$remote_version" ]] && [[ "$local_version" != "" &&  "$remote_version" != "" ]]; then
      rm -rf *
-     echo "Downloading file: ${PACKAGE}" 
-     wget "${PACKAGE}" 
+     echo "Downloading file: ${URL}" 
+     wget "${URL}" 
      unzip * 
      chmod +x chainweb-data
    else
