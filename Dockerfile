@@ -33,12 +33,14 @@ RUN apt-get update -y \
     && rm -rf /var/lib/apt/lists/*
  
 WORKDIR "/usr/local/bin"
-
-RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq -r .assets[].browser_download_url | grep ${UBUNTUVER} ) \
-    && echo "Downloading file: ${PACKAGE}" \
-    && wget "${PACKAGE}" \
-    && unzip * \
-    && rm -rf *.zip \
+RUN curl -SsL "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq '.' > INFO \
+    && URL=$(cat INFO | jq -r .assets[].browser_download_url | grep ${UBUNTUVER}) \
+    && VERSION=$( cat INFO | jq -r .tag_name ) \
+    && echo "$VERSION" > VERSION \
+    && echo "Downloading file: ${URL}" \
+    && wget "${URL}" \
+    && unzip *.zip \
+    && rm -rf  *.zip \
     && chmod +x chainweb-data
  
 RUN rm /etc/postgresql/${PG_VERSION}/main/pg_hba.conf
