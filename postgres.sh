@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 # postgres luncher
+trap stop_script SIGINT SIGTERM
+
+function stop_script(){
+  echo -e "Stopping postgres..."
+  pg_ctlcluster ${PG_VERSION} main stop
+  sleep 5
+  pg_ctlcluster ${PG_VERSION} main stop
+}
+
+
 x=0
 until [[ "$x" == 1 ]] ; do
   echo -e "Waiting for postgres marker..."
@@ -11,4 +21,5 @@ until [[ "$x" == 1 ]] ; do
     sleep 15
   fi
 done
-/usr/lib/postgresql/${PG_VERSION}/bin/postgres -D /var/lib/postgresql/data -c config_file=/var/lib/postgresql/data/postgresql.conf
+pg_ctlcluster ${PG_VERSION} main start
+#/usr/lib/postgresql/${PG_VERSION}/bin/postgres -D /var/lib/postgresql/data -c config_file=/var/lib/postgresql/data/postgresql.conf
