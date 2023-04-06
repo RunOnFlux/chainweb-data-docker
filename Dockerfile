@@ -33,7 +33,6 @@ RUN apt-get update -y \
     && rm -rf /var/lib/apt/lists/*
  
 WORKDIR "/usr/local/bin"
-
 RUN curl -SsL "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq '.' > INFO \
     && URL=$(cat INFO | jq -r .assets[].browser_download_url | grep ${UBUNTUVER}) \
     && VERSION=$( cat INFO | jq -r .tag_name ) \
@@ -67,11 +66,7 @@ RUN chmod 755 /check-health.sh
 RUN chmod 755 /postgres_init.sh
 RUN chmod 755 /postgres.sh
 
-
 EXPOSE 8888/tcp
-
 HEALTHCHECK --start-period=10m --interval=1m --retries=5 --timeout=20s CMD /check-health.sh
-
 WORKDIR "/var/lib/postgresql/data"
-
 ENTRYPOINT ["/usr/bin/supervisord"]
