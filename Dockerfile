@@ -35,8 +35,8 @@ RUN apt-get update -y \
 WORKDIR "/usr/local/bin"
 
 RUN INFO=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest") \
-    && URL=$(echo "$INFO" | jq -r .assets[].browser_download_url | grep ${UBUNTUVER}) \
-    && VERSION=$(echo "$INFO" | jq -r .tag_name ) \
+    && URL=$(echo -E "$INFO" | jq -r .assets[].browser_download_url | grep ${UBUNTUVER}) \
+    && VERSION=$(echo -E "$INFO" | jq -r .tag_name ) \
     && echo "$VERSION" > VERSION \
     && echo "Downloading file: ${URL}" \
     && wget "${URL}" \
