@@ -33,7 +33,6 @@ function update() {
    fi
 }
 
-
 if [[ "$1" == "start" ]]; then
   echo -e "Checking postgreSQL..."
   status=$(pg_ctlcluster ${PG_VERSION} main status)
@@ -49,7 +48,6 @@ if [[ "$1" == "start" ]]; then
   echo -e "Starting chainweb-data..."
   chainweb-data server --port 8888 --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres -m +RTS -N
 fi
-
 
 if [[ "$1" == "update" ]]; then
   kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
