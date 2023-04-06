@@ -16,10 +16,11 @@ function update() {
    echo -e "Checking update...."
    cd /usr/local/bin
    local_version=$(cat VERSION)
-   remote_info=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq -r .)
+   remote_info=$(curl -SsL -m 10 "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq -r .)
    URL=$(jq -r .assets[].browser_download_url | grep "$UBUNTUVER" <<< "$remote_info")
    remote_version=$(jq -r .tag_name <<< "$remote_info")
    echo -e "Local version: $local_version, Remote version: $remote_version"
+   echo -e "URL: $URL"
    if [[ "$local_version" != "$remote_version" ]] && [[ "$local_version" != "" &&  "$remote_version" != "" ]]; then
      rm -rf *
      echo "$remote_version" > VERSION
