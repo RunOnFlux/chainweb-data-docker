@@ -10,6 +10,7 @@ function node_await() {
      sleep 200
    done
  fi
+}
 
 function update() {
    echo -e "Checking update...."
