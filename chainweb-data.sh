@@ -15,20 +15,24 @@ function node_await() {
 function update() {
    echo -e "Checking update...."
    cd /usr/local/bin
-   local_version=$(cut VERSION)
+   local_version=$(cat VERSION)
    remote_info=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq -r .)
-   URL=$(jq -r .assets[].browser_download_url <<< "$remote_info") | grep ${UBUNTUVER}
+   URL=$((jq -r .assets[].browser_download_url <<< "$remote_info") | grep ${UBUNTUVER})
    remote_version=$(jq -r .tag_name <<< "$remote_info")
+   echo -e "Local version: $local_version, Remote version: $remote_version"
    if [[ "$local_version" != "$remote_version" ]] && [[ "$local_version" != "" &&  "$remote_version" != "" ]]; then
      rm -rf *
-     echo "Downloading file: ${URL}" 
-     wget "${URL}" 
-     unzip * 
+     echo "$remote_version" > VERSION
+     echo "Downloading file: ${URL}"
+     wget "${URL}"
+     unzip *.zip
+     rm -rf *.zip
      chmod +x chainweb-data
    else
      echo -e "You have the latest version..."
    fi
 }
+
 
 if [[ "$1" == "start" ]]; then
   sleep 20
