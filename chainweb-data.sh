@@ -35,7 +35,10 @@ function update() {
 
 
 if [[ "$1" == "start" ]]; then
-  sleep 20
+  echo -e "Waiting for postgreSQL..."
+  sleep 30
+  echo -e "Checking postgreSQL status..."
+  pg_ctlcluster ${PG_VERSION} main status
   update
   node_await
   echo -e "Starting chainweb-data..." 
