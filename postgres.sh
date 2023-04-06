@@ -9,6 +9,6 @@ fi
 
 if [[ "$1" == "stop" ]]; then
   echo -e "Stopping postgres..."
-  supervisorctl stop postgres_start > /dev/null 2>&1
+  supervisorctl stop postgres_start
   pg_ctlcluster ${PG_VERSION} main stop -m fast
 fi
