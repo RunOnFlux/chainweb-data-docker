@@ -2,18 +2,9 @@
 # postgres luncher
 
 if [[ "$1" == "start" ]]; then
-  x=0
-  until [[ "$x" == 1 ]] ; do
-    echo -e "Waiting for postgres marker..."
-    if [[ -f /tmp/postgres_start ]]; then
-      echo -e "Starting postgres..."
-      sleep 10
-      x=1
-    else
-      sleep 15
-    fi
-  done
-/usr/lib/postgresql/${PG_VERSION}/bin/postgres -D /var/lib/postgresql/data -c config_file=/var/lib/postgresql/data/postgresql.conf
+  echo -e "Starting postgres..."
+  /usr/lib/postgresql/${PG_VERSION}/bin/postgres -D /var/lib/postgresql/data -c config_file=/var/lib/postgresql/data/postgresql.conf
+  sleep 15
 fi
 
 if [[ "$1" == "stop" ]]; then
