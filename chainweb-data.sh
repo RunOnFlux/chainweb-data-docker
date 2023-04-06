@@ -39,10 +39,10 @@ if [[ "$1" == "start" ]]; then
   status=$(pg_ctlcluster ${PG_VERSION} main status)
   if [[ $(grep "server is running" <<< "$status") ]]; then
     echo -e "PostgreSQL server is running..."
-    sleep 15
+    sleep 40
   else
     echo -e "Waiting for postgreSQL..."
-    sleep 40
+    sleep 60
   fi
   update
   node_await
