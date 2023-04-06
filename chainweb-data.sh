@@ -11,7 +11,7 @@ function node_await() {
    done
  fi
 
-function update(){
+function update() {
    echo -e "Checking update...."
    cd /usr/local/bin
    file_version=$(ls -a | grep zip)
