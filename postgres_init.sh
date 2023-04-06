@@ -14,6 +14,4 @@ else
  chmod 700 -R /var/lib/postgresql/data
 fi
 
-echo "Postgres start..." >> /tmp/postgres_start
-
 
