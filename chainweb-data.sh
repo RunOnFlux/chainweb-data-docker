@@ -15,10 +15,12 @@ function node_await() {
 function update() {
    echo -e "Checking update...."
    cd /usr/local/bin
-   file_version=$(ls -a | grep zip)
-   PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq -r .assets[].browser_download_url | grep ${UBUNTUVER} ) 
-   if [[ $(grep $file_version <<< "$PACKAGE") != "" ]]; then
-     rm -rf *.zip chainweb-data
+   local_version=$(cut VERSION)
+   remote_info=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-data/releases/latest" | jq -r .)
+   URL=$(jq -r .assets[].browser_download_url <<< "$remote_info") | grep ${UBUNTUVER}
+   remote_version=$(jq -r .tag_name <<< "$remote_info")
+   if [[ "$local_version" != "$remote_version" ]] && [[ "$local_version" != "" &&  "$remote_version" != "" ]]; then
+     rm -rf *
      echo "Downloading file: ${PACKAGE}" 
      wget "${PACKAGE}" 
      unzip * 
