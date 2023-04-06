@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
-
 check=$(supervisorctl status | egrep  'chainweb-data|postgres' | grep RUNNING | wc -l)
-
 if [[ "$check" == 2 ]]; then
-
   check_api_listening=$(sudo lsof -i -P -n | grep -o 8888)
   if [[ "$check_api_listening" != "" ]]; then
     status="ONLINE"
   else
     status="OFFLINE"
   fi
-
  if [[ -f /tmp/backfill ]]; then
      echo "chainweb-data: running ($status), postgres: running, fill: complited"
  else
@@ -26,7 +22,6 @@ if [[ "$check" == 2 ]]; then
      fi
      echo "chainweb-data: running ($status), postgres: running, fill: running | $progress"
  fi
-
 else
   exit 1
 fi
