@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 # postgres luncher
 trap stop_script SIGINT SIGTERM
-
 function stop_script(){
   echo -e "Stopping postgres..."
-  pg_ctlcluster ${PG_VERSION} main stop
+  pg_ctlcluster ${PG_VERSION} main stop -m fast
   sleep 5
-  pg_ctlcluster ${PG_VERSION} main stop
+  pg_ctlcluster ${PG_VERSION} main stop -m fast
 }
-
 
 x=0
 until [[ "$x" == 1 ]] ; do
