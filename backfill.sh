@@ -1,5 +1,6 @@
 #!/bin/bash
 # chainweb-data db sync script
+PATH_DATA="/var/lib/postgresql/data"
 GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
 check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null)
 if [[ "$check" == "" ]]; then
@@ -43,7 +44,7 @@ until [[ "$x" == 1 ]] ; do
 
     if [[ "$progress_check" -ge 99 || "$fill_complite" != "" ]]; then
       x=1
-      echo -e "Fill Complited!" >> /tmp/backfill
+      echo -e "Fill Complited!" >> $PATH_DATA/backfill
       echo -e "Restarting chainweb-data..."
       kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
       [ -f /var/spool/cron/crontabs/root ] && crontab_check=$(cat /var/spool/cron/crontabs/root| grep -o gaps | wc -l) || crontab_check=0
@@ -56,9 +57,9 @@ until [[ "$x" == 1 ]] ; do
       exit
     fi
     
-    if [[ "$backfill_count" == 6 ]] ; then
+    if [[ "$backfill_count" == 10 ]] ; then
        x=1
-       echo -e "Fill Complited!" >> /tmp/backfill
+       echo -e "Fill Complited!" >> $PATH_DATA/backfill
        echo -e "Restarting chainweb-data..."
        kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
        [ -f /var/spool/cron/crontabs/root ] && crontab_check=$(cat /var/spool/cron/crontabs/root| grep -o gaps | wc -l) || crontab_check=0
