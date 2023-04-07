@@ -43,7 +43,11 @@ if [[ "$1" == "start" ]]; then
     echo -e "Waiting for postgreSQL..."
     sleep 60
   fi
-  update
+  if [[ "$AUTOUPDATE" == 1 ]]; then
+    update
+  else
+    echo "Auto update disabled..."
+  fi
   node_await
   echo -e "Starting chainweb-data..."
   chainweb-data server --port 8888 --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres -m +RTS -N
