@@ -10,7 +10,7 @@ if [[ "$check" == "" ]]; then
     sleep 300
   done
 fi
-if [[ -f /tmp/backfill ]]; then
+if [[ -f $PATH_DATA/BACKFILL ]]; then
     echo -e "Running fill as gaps..."
     chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres
     echo -e "Restarting chainweb-data..."
@@ -44,7 +44,7 @@ until [[ "$x" == 1 ]] ; do
 
     if [[ "$progress_check" -ge 99 || "$fill_complite" != "" ]]; then
       x=1
-      echo -e "Fill Complited!" >> $PATH_DATA/backfill
+      echo -e "Fill Complited!" >> $PATH_DATA/BACKFILL
       echo -e "Restarting chainweb-data..."
       kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
       [ -f /var/spool/cron/crontabs/root ] && crontab_check=$(cat /var/spool/cron/crontabs/root| grep -o gaps | wc -l) || crontab_check=0
@@ -59,7 +59,7 @@ until [[ "$x" == 1 ]] ; do
     
     if [[ "$backfill_count" == 10 ]] ; then
        x=1
-       echo -e "Fill Complited!" >> $PATH_DATA/backfill
+       echo -e "Fill Complited!" >> $PATH_DATA/BACKFILL
        echo -e "Restarting chainweb-data..."
        kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
        [ -f /var/spool/cron/crontabs/root ] && crontab_check=$(cat /var/spool/cron/crontabs/root| grep -o gaps | wc -l) || crontab_check=0
