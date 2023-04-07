@@ -46,27 +46,26 @@ until [[ "$x" == 1 ]] ; do
       echo -e "Fill Complited!" >> /tmp/backfill
       echo -e "Restarting chainweb-data..."
       kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
-      if [[ ! -f /tmp/crone ]]; then
-        sleep 120
+      [ -f /var/spool/cron/crontabs/root ] && crontab_check=$(cat /var/spool/cron/crontabs/root| grep -o gaps | wc -l) || crontab_check=0
+      if [[ "$crontab_check" == "0" ]]; then
         echo -e "Added crone job for fill as gaps..."
-        (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/fill_output.log 2>&1") | crontab -
-        echo -e "Cron job added!" >> /tmp/crone
+        (crontab -l -u root 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/fill_output.log 2>&1") | crontab -
       else
-        echo -e "Cron job already exist..."
+        echo -e "Crone job already exist..."
       fi
       exit
     fi
-    if [[ "$backfill_count" == 5 ]] ; then
+    
+    if [[ "$backfill_count" == 6 ]] ; then
        x=1
        echo -e "Fill Complited!" >> /tmp/backfill
        echo -e "Restarting chainweb-data..."
        kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
-       if [[ ! -f /tmp/crone ]]; then
-         sleep 120
+       [ -f /var/spool/cron/crontabs/root ] && crontab_check=$(cat /var/spool/cron/crontabs/root| grep -o gaps | wc -l) || crontab_check=0
+       if [[ "$crontab_check" == "0" ]]; then
          echo -e "Added crone job for fill as gaps..."
-         (crontab -l -u "$USER" 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/fill_output.log 2>&1") | crontab -
-         echo -e "Crone job added!" >> /tmp/crone
-        else
+         (crontab -l -u root 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/fill_output.log 2>&1") | crontab -
+       else
          echo -e "Crone job already exist..."
        fi
        exit
