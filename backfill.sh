@@ -64,4 +64,5 @@ until [[ "$x" == 1 ]] ; do
       cronJob
       exit
     fi
+  fi  
 done
