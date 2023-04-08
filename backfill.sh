@@ -40,15 +40,21 @@ until [[ "$x" == 1 ]] ; do
   fi
   server_check=$(ps aux | grep idle | wc -l)
   if [[ "$server_check" -ge 2 ]]; then
-    #CLEAN OLD LOGS
-    echo "" > $PATH_DATA/fill.log
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "Fill started at $date_timestamp"
     chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres +RTS -N
     sleep 10
-    progress_check=$(cat $PATH_DATA/fill.log | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
+    
+    line_number=$(grep -no 'DB Tables Initialized' $PATH_DATA/fill.log | tail -n1 | egrep -o [0-9]+)
+    if [[ "$line_number" == "" ]]; then
+      line_number=0
+    else
+      echo -e "Show logs belown line $line_number" 
+    fi
+    
+    progress_check=$(awk -v line=$line_number 'NR>line' $PATH_DATA/fill.log | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    filled_blocks=cat $(cat $PATH_DATA/fill.log  | grep -oP '(?<=Filled in ).*(?= missing blocks.)' | tail -n1)
+    filled_blocks=cat $(awk -v line=$line_number 'NR>line' $PATH_DATA/fill.log  | grep -oP '(?<=Filled in ).*(?= missing blocks.)' | tail -n1)
     backfill_count=$((backfill_count+1))
     
     if [[ "$progress_check" != "" ]]; then
@@ -58,7 +64,6 @@ until [[ "$x" == 1 ]] ; do
       echo -e "Fill stopped at $date_timestamp, counter: $backfill_count"
       echo -e "Filled:  $filled_blocks blocks. (LIMIT: $MIN_BLOCKS)"
     fi
-    
     if [[ "$progress_check" -ge 98 || "$filled_blocks" -le "$MIN_BLOCKS" ]]; then
       x=1
       echo -e "FILL COMPLITED!" >> $PATH_DATA/BACKFILL
