@@ -39,21 +39,24 @@ until [[ "$x" == 1 ]] ; do
   fi
   server_check=$(ps aux | grep idle | wc -l)
   if [[ "$server_check" -ge 2 ]]; then
+    #CLEAN OLD LOGS
+    echo "" > /var/lib/postgresql/data/fill.log
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "Fill started at $date_timestamp"
     chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres +RTS -N
     sleep 10
-    progress_check=$(cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
+    progress_check=$(cat /var/lib/postgresql/data/fill.log | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    fill_complite=cat $(ls /var/log/supervisor | grep chainweb-backfill-stdout | awk {'print "/var/log/supervisor/"$1'} ) | egrep -o 'Filled in 0 missing blocks.' | tail -n1
+    fill_complite=cat $(cat /var/lib/postgresql/data/fill.log  | grep -oP '(?<=Filled in ).*(?= missing blocks.)' | tail -n)
     backfill_count=$((backfill_count+1))
+    
     if [[ "$progress_check" != "" ]]; then
       echo -e "Fill progress: $progress_check %, stopped at $date_timestamp, counter: $backfill_count"
     else
       echo -e "Fill stopped at $date_timestamp, counter: $backfill_count"
     fi
-
-    if [[ "$progress_check" -ge 98 || "$fill_complite" != "" ]]; then
+    
+    if [[ "$progress_check" -ge 98 || "$fill_complite" -le 200 ]]; then
       x=1
       echo -e "Fill Complited!" >> $PATH_DATA/BACKFILL
       echo -e "Restarting chainweb-data..."
@@ -61,14 +64,4 @@ until [[ "$x" == 1 ]] ; do
       cronJob
       exit
     fi
-    
-    if [[ "$backfill_count" == 10 ]] ; then
-       x=1
-       echo -e "Fill Complited!" >> $PATH_DATA/BACKFILL
-       echo -e "Restarting chainweb-data..."
-       kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
-       cronJob
-       exit
-     fi
-  fi
 done
