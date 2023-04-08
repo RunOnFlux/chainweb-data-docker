@@ -67,6 +67,7 @@ until [[ "$x" == 1 ]] ; do
     if [[ "$progress_check" -ge 98 ]] || [[ "$filled_blocks" -le "$MIN_BLOCKS"  &&  "$filled_blocks" != "" ]]; then
       x=1
       echo -e "FILL COMPLITED!" >> $PATH_DATA/BACKFILL
+      echo -e "Inintial fill status: COMPLITED"
       echo -e "Restarting chainweb-data..."
       kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
       cronJob
