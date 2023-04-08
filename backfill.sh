@@ -2,6 +2,15 @@
 # chainweb-data db sync script
 PATH_DATA="/var/lib/postgresql/data"
 GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
+
+function cronJob(){
+    [ -f /var/spool/cron/crontabs/root ] && crontab_check=$(cat /var/spool/cron/crontabs/root| grep -o gaps | wc -l) || crontab_check=0
+    if [[ "$crontab_check" == "0" ]]; then
+      echo -e "Added crone job for fill as gaps..."
+      (crontab -l -u root 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/fill_output.log 2>&1") | crontab -
+    fi
+}
+
 check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null)
 if [[ "$check" == "" ]]; then
   until [[ "$check" != "" ]] ; do
@@ -10,7 +19,9 @@ if [[ "$check" == "" ]]; then
     sleep 300
   done
 fi
+
 if [[ -f $PATH_DATA/BACKFILL ]]; then
+    cronJob
     echo -e "Running fill as gaps..."
     chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres
     echo -e "Restarting chainweb-data..."
@@ -42,18 +53,12 @@ until [[ "$x" == 1 ]] ; do
       echo -e "Fill stopped at $date_timestamp, counter: $backfill_count"
     fi
 
-    if [[ "$progress_check" -ge 99 || "$fill_complite" != "" ]]; then
+    if [[ "$progress_check" -ge 98 || "$fill_complite" != "" ]]; then
       x=1
       echo -e "Fill Complited!" >> $PATH_DATA/BACKFILL
       echo -e "Restarting chainweb-data..."
       kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
-      [ -f /var/spool/cron/crontabs/root ] && crontab_check=$(cat /var/spool/cron/crontabs/root| grep -o gaps | wc -l) || crontab_check=0
-      if [[ "$crontab_check" == "0" ]]; then
-        echo -e "Added crone job for fill as gaps..."
-        (crontab -l -u root 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/fill_output.log 2>&1") | crontab -
-      else
-        echo -e "Crone job already exist..."
-      fi
+      cronJob
       exit
     fi
     
@@ -62,13 +67,7 @@ until [[ "$x" == 1 ]] ; do
        echo -e "Fill Complited!" >> $PATH_DATA/BACKFILL
        echo -e "Restarting chainweb-data..."
        kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
-       [ -f /var/spool/cron/crontabs/root ] && crontab_check=$(cat /var/spool/cron/crontabs/root| grep -o gaps | wc -l) || crontab_check=0
-       if [[ "$crontab_check" == "0" ]]; then
-         echo -e "Added crone job for fill as gaps..."
-         (crontab -l -u root 2>/dev/null; echo "30 22 * * *  /bin/bash /gaps.sh > /tmp/fill_output.log 2>&1") | crontab -
-       else
-         echo -e "Crone job already exist..."
-       fi
+       cronJob
        exit
      fi
   fi
