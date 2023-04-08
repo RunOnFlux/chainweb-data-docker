@@ -47,17 +47,18 @@ until [[ "$x" == 1 ]] ; do
     sleep 10
     progress_check=$(cat /var/lib/postgresql/data/fill.log | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    fill_complite=cat $(cat /var/lib/postgresql/data/fill.log  | grep -oP '(?<=Filled in ).*(?= missing blocks.)' | tail -n1)
+    filled_blocks=cat $(cat /var/lib/postgresql/data/fill.log  | grep -oP '(?<=Filled in ).*(?= missing blocks.)' | tail -n1)
     backfill_count=$((backfill_count+1))
     
     if [[ "$progress_check" != "" ]]; then
       echo -e "Fill progress: $progress_check %, stopped at $date_timestamp, counter: $backfill_count"
+      echo -e "Filled:  $filled_blocks blocks."
     else
       echo -e "Fill stopped at $date_timestamp, counter: $backfill_count"
-      echo -e "Filled:  $fill_complite blocks."
+      echo -e "Filled:  $filled_blocks blocks."
     fi
     
-    if [[ "$progress_check" -ge 98 || "$fill_complite" -le 200 ]]; then
+    if [[ "$progress_check" -ge 98 || "$filled_blocks" -le 200 ]]; then
       x=1
       echo -e "Fill Complited!" >> $PATH_DATA/BACKFILL
       echo -e "Restarting chainweb-data..."
