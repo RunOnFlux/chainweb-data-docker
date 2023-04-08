@@ -54,7 +54,7 @@ until [[ "$x" == 1 ]] ; do
     
     progress_check=$(awk -v line=$line_number 'NR>line' $PATH_DATA/fill.log | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    filled_blocks=cat $(awk -v line=$line_number 'NR>line' $PATH_DATA/fill.log  | grep -oP '(?<=Filled in ).*(?= missing blocks.)' | tail -n1)
+    filled_blocks=$(awk -v line=$line_number 'NR>line' $PATH_DATA/fill.log  | grep -oP '(?<=Filled in ).*(?= missing blocks.)' | tail -n1)
     backfill_count=$((backfill_count+1))
     
     if [[ "$progress_check" != "" ]]; then
@@ -64,7 +64,7 @@ until [[ "$x" == 1 ]] ; do
       echo -e "Fill stopped at $date_timestamp, counter: $backfill_count"
       echo -e "Filled:  $filled_blocks blocks. (LIMIT: $MIN_BLOCKS)"
     fi
-    if [[ "$progress_check" -ge 98 || "$filled_blocks" -le "$MIN_BLOCKS" ]]; then
+    if [[ "$progress_check" -ge 98 ]] || [[ "$filled_blocks" -le "$MIN_BLOCKS"  &&  "$filled_blocks" != "" ]]; then
       x=1
       echo -e "FILL COMPLITED!" >> $PATH_DATA/BACKFILL
       echo -e "Restarting chainweb-data..."
