@@ -41,14 +41,14 @@ until [[ "$x" == 1 ]] ; do
   server_check=$(ps aux | grep idle | wc -l)
   if [[ "$server_check" -ge 2 ]]; then
     #CLEAN OLD LOGS
-    echo "" > /var/lib/postgresql/data/fill.log
+    echo "" > $PATH_DATA/fill.log
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "Fill started at $date_timestamp"
     chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres +RTS -N
     sleep 10
-    progress_check=$(cat /var/lib/postgresql/data/fill.log | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
+    progress_check=$(cat $PATH_DATA/fill.log | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    filled_blocks=cat $(cat /var/lib/postgresql/data/fill.log  | grep -oP '(?<=Filled in ).*(?= missing blocks.)' | tail -n1)
+    filled_blocks=cat $(cat $PATH_DATA/fill.log  | grep -oP '(?<=Filled in ).*(?= missing blocks.)' | tail -n1)
     backfill_count=$((backfill_count+1))
     
     if [[ "$progress_check" != "" ]]; then
