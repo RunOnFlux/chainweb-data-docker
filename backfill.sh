@@ -2,6 +2,7 @@
 # chainweb-data db sync script
 PATH_DATA="/var/lib/postgresql/data"
 GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
+MIN_BLOCKS=200
 
 function cronJob(){
     [ -f /var/spool/cron/crontabs/root ] && crontab_check=$(cat /var/spool/cron/crontabs/root| grep -o gaps | wc -l) || crontab_check=0
@@ -52,15 +53,15 @@ until [[ "$x" == 1 ]] ; do
     
     if [[ "$progress_check" != "" ]]; then
       echo -e "Fill progress: $progress_check %, stopped at $date_timestamp, counter: $backfill_count"
-      echo -e "Filled:  $filled_blocks blocks."
+      echo -e "Filled:  $filled_blocks blocks. (LIMIT: $MIN_BLOCKS)"
     else
       echo -e "Fill stopped at $date_timestamp, counter: $backfill_count"
-      echo -e "Filled:  $filled_blocks blocks."
+      echo -e "Filled:  $filled_blocks blocks. (LIMIT: $MIN_BLOCKS)"
     fi
     
-    if [[ "$progress_check" -ge 98 || "$filled_blocks" -le 200 ]]; then
+    if [[ "$progress_check" -ge 98 || "$filled_blocks" -le "$MIN_BLOCKS" ]]; then
       x=1
-      echo -e "Fill Complited!" >> $PATH_DATA/BACKFILL
+      echo -e "FILL COMPLITED!" >> $PATH_DATA/BACKFILL
       echo -e "Restarting chainweb-data..."
       kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
       cronJob
