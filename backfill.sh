@@ -68,8 +68,8 @@ until [[ "$x" == 1 ]] ; do
       x=1
       echo -e "FILL COMPLITED!" >> $PATH_DATA/BACKFILL
       echo -e "Inintial fill status: COMPLITED"
-      echo -e "Restarting chainweb-data..."
-      kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
+      #echo -e "Restarting chainweb-data..."
+      #kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
       cronJob
       exit
     fi
