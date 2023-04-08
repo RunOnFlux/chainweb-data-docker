@@ -49,7 +49,7 @@ until [[ "$x" == 1 ]] ; do
     if [[ "$line_number" == "" ]]; then
       line_number=0
     else
-      echo -e "Show logs belown line $line_number" 
+      echo -e "Checking logs belown line $line_number" 
     fi
     
     progress_check=$(awk -v line=$line_number 'NR>line' $PATH_DATA/fill.log | egrep -o 'Progress:.*[0-9]+\.[0-9]+.*' | egrep -o '[0-9]+\.[0-9]+' | tail -n1)
@@ -59,10 +59,10 @@ until [[ "$x" == 1 ]] ; do
     
     if [[ "$progress_check" != "" ]]; then
       echo -e "Fill progress: $progress_check %, stopped at $date_timestamp, counter: $backfill_count"
-      echo -e "Filled:  $filled_blocks blocks. (LIMIT: $MIN_BLOCKS)"
+      echo -e "Filled: $filled_blocks blocks. (LIMIT: $MIN_BLOCKS)"
     else
       echo -e "Fill stopped at $date_timestamp, counter: $backfill_count"
-      echo -e "Filled:  $filled_blocks blocks. (LIMIT: $MIN_BLOCKS)"
+      echo -e "Filled: $filled_blocks blocks. (LIMIT: $MIN_BLOCKS)"
     fi
     if [[ "$progress_check" -ge 98 ]] || [[ "$filled_blocks" -le "$MIN_BLOCKS"  &&  "$filled_blocks" != "" ]]; then
       x=1
