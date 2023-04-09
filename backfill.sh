@@ -25,8 +25,8 @@ if [[ -f $PATH_DATA/BACKFILL ]]; then
     cronJob
     echo -e "Running fill as gaps..."
     chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres
-    echo -e "Restarting chainweb-data..."
-    kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
+    #echo -e "Restarting chainweb-data..."
+    #kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
     exit
 fi
 x=0
