@@ -1,8 +1,10 @@
 #!/bin/bash
 GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
+PATH_DATA="/var/lib/postgresql/data"
 
-if [[ ! -f /tmp/backfill ]]; then
+if [[ -f $PATH_DATA/BACKFILL ]]; then
     echo -e "Fill not complited...skipped..."  
+    exit
 fi
 
 date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
