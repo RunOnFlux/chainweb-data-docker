@@ -57,7 +57,7 @@ until [[ "$x" == 1 ]] ; do
       exit
     fi
     
-    if [[ "$backfill_count" == 10 ]] ; then
+    if [[ "$backfill_count" == 50 ]] ; then
        x=1
        echo -e "Fill Complited!" >> $PATH_DATA/BACKFILL
        echo -e "Restarting chainweb-data..."
