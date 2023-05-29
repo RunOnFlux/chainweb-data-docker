@@ -13,5 +13,3 @@ else
  chmod 700 -R /var/lib/postgresql/data/*
  chmod 700 -R /var/lib/postgresql/data
 fi
-
-

@@ -2,7 +2,7 @@
 GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
 PATH_DATA="/var/lib/postgresql/data"
 
-if [[ ! -f $PATH_DATA/BACKFILL ]]; then
+if [[ -f $PATH_DATA/BACKFILL ]]; then
     echo -e "Fill not complited...skipped..."  
     exit
 fi
