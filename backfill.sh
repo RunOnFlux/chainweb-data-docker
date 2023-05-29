@@ -35,9 +35,12 @@ until [[ "$x" == 1 ]] ; do
   if [[ "$backfill_count" == 0 ]]; then
     echo "Initial waiting to receive a block on each chain..."
     sleep 150
-    if [[ ! -f $PATH_DATA/INDEX ]]; then 
+    if [[ ! -f $PATH_DATA/INDEX ]]; then
+      echo "Creating pg_trgm extension..."
       psql -U postgres -d postgres -c "create extension pg_trgm;"
+      echo "Creating indexes..."
       psql -U postgres -d postgres -c 'CREATE INDEX "transactions-requestkey" ON public.transactions USING btree (requestkey);'
+      psql -U postgres -d postgres -c 'CREATE INDEX "events-requestkey" ON public.events USING btree (requestkey);'
       psql -U postgres -d postgres -c 'CREATE INDEX "transactions-code" ON public.transactions USING gin (code gin_trgm_ops);'
       psql -U postgres -d postgres -c 'CREATE INDEX "events-qualname" ON public.events USING gin (qualname gin_trgm_ops);'
       psql -U postgres -d postgres -c 'CREATE INDEX "events-paramtext" ON public.events USING gin (paramtext gin_trgm_ops);'
