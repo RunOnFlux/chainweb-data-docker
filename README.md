@@ -25,3 +25,5 @@ docker inspect --format "{{json .State.Health }}" KadenaChainWebData | jq
 - /txs/search?search=foo&limit=20&offset=40 searches for transactions containing the string foo
 - /stats returns a few stats such as transaction count and coins in circulation
 - /coins returns just the coins in circulation
+
+2.3.0 (2023-08-14)
