@@ -1,7 +1,10 @@
 #!/bin/bash
 # chainweb-data db sync script
 PATH_DATA="/var/lib/postgresql/data"
-GATEWAYIP=$(hostname -i | sed 's/\.[^.]*$/.1/')
+GATEWAYIPlocal=$(hostname -i | sed 's/\.[^.]*$/.1/')
+GATEWAYIP=${GATEWAY:-$GATEWAYIPlocal}
+GATEWAYPORT=${GATEWAYPORT:-31350}
+SERVICEPORT=${SERVICEPORT:-31351}
 MIN_BLOCKS=200
 
 function cronJob(){
@@ -12,10 +15,10 @@ function cronJob(){
     fi
 }
 
-check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null)
+check=$(curl -SsL -k -m 15 https://$GATEWAYIP:$GATEWAYPORT/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null)
 if [[ "$check" == "" ]]; then
   until [[ "$check" != "" ]] ; do
-    check=$(curl -SsL -k -m 15 https://$GATEWAYIP:31350/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null) 
+    check=$(curl -SsL -k -m 15 https://$GATEWAYIP:$GATEWAYPORT/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null) 
     echo -e "Waiting for KDA node..."
     sleep 300
   done
@@ -24,7 +27,7 @@ fi
 if [[ -f $PATH_DATA/BACKFILL ]]; then
     cronJob
     echo -e "Running fill as gaps..."
-    chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres
+    chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=$SERVICEPORT --p2p-port=$GATEWAYPORT --dbuser=postgres --dbpass=postgres --dbname=postgres
     #echo -e "Restarting chainweb-data..."
     #kill -9 $(ps aux | grep 'chainweb-data server --port 8888' | awk '{ print $2 }' | head -n1)
     exit
@@ -53,7 +56,7 @@ until [[ "$x" == 1 ]] ; do
   if [[ "$server_check" -ge 2 ]]; then
     date_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo -e "Fill started at $date_timestamp"
-    chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=31351 --p2p-port=31350 --dbuser=postgres --dbpass=postgres --dbname=postgres +RTS -N
+    chainweb-data fill --service-host=$GATEWAYIP --p2p-host=$GATEWAYIP --service-port=$SERVICEPORT --p2p-port=$GATEWAYPORT --dbuser=postgres --dbpass=postgres --dbname=postgres +RTS -N
     sleep 10
     
     line_number=$(grep -no 'DB Tables Initialized' $PATH_DATA/fill.log | tail -n1 | egrep -o [0-9]+)
