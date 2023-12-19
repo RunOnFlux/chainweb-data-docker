@@ -5,7 +5,7 @@ $ docker pull runonflux/kadena-chainweb-data
 ```
 ### Deploy container
 ```shell script
-$ docker run -d -p 8888:8888 --restart=always -v /local/path:/var/lib/postgresql/data --name "KadenaChainWebData" -e GATEWAY=kadena.dapp.runonflux.io -e GATEWAYPORT=31350 -e SERVICEPORT=31351 runonflux/kadena-chainweb-data
+$ docker run -d -p 8888:8888 --restart=always -v /local/path:/var/lib/postgresql/data --name "KadenaChainWebData" -e GATEWAY=kadena.dapp.runonflux.io -e GATEWAYPROTOCOL=https -e GATEWAYPORT=31350 -e SERVICEPORT=31351 runonflux/kadena-chainweb-data
 ```
 ### Chainweb-data complex solution
 - server 

@@ -4,11 +4,12 @@ GATEWAYlocal=$(hostname -i | sed 's/\.[^.]*$/.1/')
 GATEWAY=${GATEWAY:-$GATEWAYlocal}
 GATEWAYPORT=${GATEWAYPORT:-31350}
 SERVICEPORT=${SERVICEPORT:-31351}
+GATEWAYPROTOCOL=${GATEWAYPROTOCOL:-https}
 function node_await() {
- check=$(curl -SsL -k -m 15 https://$GATEWAY:$GATEWAYPORT/chainweb/0.0/mainnet01/cut  2>/dev/null | jq .height 2>/dev/null)
+ check=$(curl -SsL -k -m 15 $GATEWAYPROTOCOL://$GATEWAY:$GATEWAYPORT/chainweb/0.0/mainnet01/cut  2>/dev/null | jq .height 2>/dev/null)
  if [[ "$check" == "" ]]; then
    until [ $check != "" ] ; do
-     check=$(curl -SsL -k -m 15 https://$GATEWAY:$GATEWAYPORT/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null)
+     check=$(curl -SsL -k -m 15 $GATEWAYPROTOCOL://$GATEWAY:$GATEWAYPORT/chainweb/0.0/mainnet01/cut 2>/dev/null | jq .height 2>/dev/null)
      echo -e "Waiting for KDA node..."
      sleep 200
    done
