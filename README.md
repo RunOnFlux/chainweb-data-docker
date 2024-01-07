@@ -26,4 +26,4 @@ docker inspect --format "{{json .State.Health }}" KadenaChainWebData | jq
 - /stats returns a few stats such as transaction count and coins in circulation
 - /coins returns just the coins in circulation
 
-2.4.0 (2023-01-07)
+2.4.0 (2024-01-07)
